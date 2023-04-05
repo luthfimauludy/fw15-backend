@@ -1,10 +1,7 @@
-exports.getAllUsers = (req, res) => {
-  const data = [
-    {
-      name: "Bob",
-      phone: "08131231231",
-    },
-  ];
+const userModel = require("../models/users.model");
+
+exports.getAllUsers = async (req, res) => {
+  const data = await userModel.findAll();
   return res.json({
     success: true,
     message: "List of all users",
