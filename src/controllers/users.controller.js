@@ -1,4 +1,5 @@
 const userModel = require("../models/users.model");
+const errorHandler = require("../helpers/errorHandler.helper");
 
 exports.getAllUsers = async (req, res) => {
   const data = await userModel.findAll();
@@ -25,27 +26,29 @@ exports.getOneUser = async (req, res) => {
 };
 
 exports.createUser = async (req, res) => {
-  const data = await userModel.insert(req.params.id, req.body);
-  if (!data) {
-    return res.status(404).json({
-      success: false,
-      message: "Error: User is already exists",
+  try {
+    const data = await userModel.insert(req.body);
+    return res.json({
+      success: true,
+      message: `Create user ${req.body.email} successfully`,
+      results: data,
     });
+  } catch (err) {
+    return errorHandler(req, res, err);
   }
-  return res.json({
-    success: true,
-    message: `Create user ${req.body.email} successfully`,
-    results: data,
-  });
 };
 
 exports.updateUser = async (req, res) => {
-  const data = await userModel.update(req.params.id, req.body);
-  return res.json({
-    success: true,
-    message: "Update user successfully",
-    results: data,
-  });
+  try {
+    const data = await userModel.update(req.params.id, req.body);
+    return res.json({
+      success: true,
+      message: "Update user successfully",
+      results: data,
+    });
+  } catch (err) {
+    return errorHandler(res, err);
+  }
 };
 
 exports.deleteUser = async (req, res) => {

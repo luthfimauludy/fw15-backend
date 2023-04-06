@@ -18,7 +18,8 @@ exports.findOne = async function (id) {
 exports.insert = async function (data) {
   const query = `
   INSERT INTO "users" ("email", "password") 
-  VALUES ($1, $2) RETURNING *;
+  VALUES ($1, $2) 
+  RETURNING *;
 `;
   const values = [data.email, data.password];
   const { rows } = await db.query(query, values);
@@ -40,7 +41,8 @@ exports.update = async function (id, data) {
 exports.destroy = async function (id) {
   const query = `
   DELETE FROM "users" 
-  WHERE "id"=$1;
+  WHERE "id"=$1
+  RETURNING *;
 `;
   const values = [id];
   const { rows } = await db.query(query, values);
