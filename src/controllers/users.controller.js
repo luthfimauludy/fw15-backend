@@ -2,12 +2,22 @@ const userModel = require("../models/users.model");
 const errorHandler = require("../helpers/errorHandler.helper");
 
 exports.getAllUsers = async (req, res) => {
-  const data = await userModel.findAll();
-  return res.json({
-    success: true,
-    message: "List of all users",
-    results: data,
-  });
+  try {
+    const data = await userModel.findAll(
+      req.query.page,
+      req.query.limit,
+      req.query.search,
+      req.query.sort,
+      req.query.sortBy
+    );
+    return res.json({
+      success: true,
+      message: "List of all users",
+      results: data,
+    });
+  } catch (err) {
+    return errorHandler(res, err);
+  }
 };
 
 exports.getOneUser = async (req, res) => {
@@ -27,6 +37,12 @@ exports.getOneUser = async (req, res) => {
 
 exports.createUser = async (req, res) => {
   try {
+    if (req.body.email == "" && req.body.password == "") {
+      throw Error("empty_field");
+    }
+    if (!req.body.email.includes("@")) {
+      throw Error("email_format");
+    }
     const data = await userModel.insert(req.body);
     return res.json({
       success: true,
@@ -34,7 +50,7 @@ exports.createUser = async (req, res) => {
       results: data,
     });
   } catch (err) {
-    return errorHandler(req, res, err);
+    return errorHandler(res, err);
   }
 };
 
@@ -47,7 +63,7 @@ exports.updateUser = async (req, res) => {
       results: data,
     });
   } catch (err) {
-    return errorHandler(res, err);
+    return errorHandler(req, res, err);
   }
 };
 
