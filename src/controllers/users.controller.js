@@ -56,6 +56,12 @@ exports.createUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
+    if (req.body.email == "" && req.body.password == "") {
+      throw Error("empty_field");
+    }
+    if (!req.body.email.includes("@")) {
+      throw Error("email_format");
+    }
     const data = await userModel.update(req.params.id, req.body);
     return res.json({
       success: true,
@@ -63,7 +69,7 @@ exports.updateUser = async (req, res) => {
       results: data,
     });
   } catch (err) {
-    return errorHandler(req, res, err);
+    return errorHandler(res, err);
   }
 };
 
