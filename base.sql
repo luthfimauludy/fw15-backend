@@ -14,3 +14,7 @@ INSERT INTO "users" ("email", "password") VALUES ('ronald@mail.com', '1234');
 UPDATE "users" SET "email"='admin@gmail.com' WHERE "id"=1;
 
 DELETE FROM "users" WHERE "id"=2;
+
+SELECT * FROM "users" LIMIT 5 OFFSET 0;
+
+SELECT * FROM "users" ORDER BY "email" ASC LIMIT 5 OFFSET 0;

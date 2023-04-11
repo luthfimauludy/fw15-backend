@@ -5,16 +5,28 @@ const errorHandler = (res, err) => {
       message: "Error: Email already exists!",
     });
   }
+  if (err?.message?.includes("jwt malformed")) {
+    return res.status(401).json({
+      success: false,
+      message: "Error: Token not valid!",
+    });
+  }
+  if (err?.message?.includes("invalid signature")) {
+    return res.status(401).json({
+      success: false,
+      message: "Error: Token signature not valid!",
+    });
+  }
   if (err === undefined) {
     return res.status(404).json({
       success: false,
-      message: "Error: User not found",
+      message: "Error: User not found!",
     });
   }
   if (err?.message?.includes("empty_field")) {
     return res.status(400).json({
       success: false,
-      message: "Email or password cannot be empty!",
+      message: "Error: Email or password cannot be empty!",
     });
   }
   if (err?.message?.includes("email_format")) {
@@ -23,9 +35,29 @@ const errorHandler = (res, err) => {
       message: "Error: Email not valid!",
     });
   }
+  if (err?.message?.includes("wrong_credentials")) {
+    return res.status(401).json({
+      success: false,
+      message: "Error: Wrong email or password!",
+    });
+  }
+  if (err?.message?.includes("unauthorized")) {
+    return res.status(401).json({
+      success: false,
+      message: "Error: Unauthorized",
+    });
+  }
+  if (err?.message?.includes("password_unmatch")) {
+    return res.status(400).json({
+      success: false,
+      message: "Error: Password and confirm password does not match!",
+    });
+  }
+
+  console.log(err);
   return res.status(500).json({
     success: false,
-    message: "Error: Internal server error",
+    message: "Error: Internal server error!",
   });
 };
 

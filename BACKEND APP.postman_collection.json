@@ -18,7 +18,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{url}}/admin/users?sort=email",
+									"raw": "{{url}}/admin/users",
 									"host": [
 										"{{url}}"
 									],
@@ -39,7 +39,7 @@
 										},
 										{
 											"key": "search",
-											"value": "robi",
+											"value": "fazz",
 											"disabled": true
 										},
 										{
@@ -49,7 +49,8 @@
 										},
 										{
 											"key": "sort",
-											"value": "email"
+											"value": "email",
+											"disabled": true
 										}
 									]
 								}
@@ -91,12 +92,12 @@
 									"urlencoded": [
 										{
 											"key": "email",
-											"value": "dackmail.com",
+											"value": "dack@mail.com",
 											"type": "text"
 										},
 										{
 											"key": "password",
-											"value": "1234",
+											"value": "",
 											"type": "text"
 										}
 									]
@@ -124,7 +125,7 @@
 									"urlencoded": [
 										{
 											"key": "email",
-											"value": "zoro@mail.com",
+											"value": "fazz@mail.com",
 											"type": "text"
 										},
 										{
@@ -147,7 +148,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "24"
+											"value": "3"
 										}
 									]
 								}
@@ -172,7 +173,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "38"
+											"value": "47"
 										}
 									]
 								}
@@ -180,6 +181,82 @@
 							"response": []
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "AUTH",
+			"item": [
+				{
+					"name": "LOGIN",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "growny@mail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REGISTER",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "fazztrack@mail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"type": "text"
+								},
+								{
+									"key": "confirmPassword",
+									"value": "1234",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/auth/register",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -198,6 +275,16 @@
 			"response": []
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjgxMTk2ODQxfQ.gYwtJKJOnpj09lJWboUTNVcxbzlgnZxK56ZPX9FBUJc",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",

@@ -22,9 +22,19 @@ exports.findAll = async function (page, limit, search, sort, sortBy) {
 exports.findOne = async function (id) {
   const query = `
   SELECT * FROM "users"
-  WHERE "id"=$1
+  WHERE id=$1
   `;
   const values = [id];
+  const { rows } = await db.query(query, values);
+  return rows[0];
+};
+
+exports.findOneByEmail = async function (email) {
+  const query = `
+  SELECT * FROM "users"
+  WHERE email=$1
+  `;
+  const values = [email];
   const { rows } = await db.query(query, values);
   return rows[0];
 };

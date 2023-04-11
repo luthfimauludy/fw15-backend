@@ -37,7 +37,7 @@ exports.getOneUser = async (req, res) => {
 
 exports.createUser = async (req, res) => {
   try {
-    if (req.body.email == "" && req.body.password == "") {
+    if (req.body.email == "" || req.body.password == "") {
       throw Error("empty_field");
     }
     if (!req.body.email.includes("@")) {
@@ -56,7 +56,7 @@ exports.createUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
-    if (req.body.email == "" && req.body.password == "") {
+    if (req.body.email == "" || req.body.password == "") {
       throw Error("empty_field");
     }
     if (!req.body.email.includes("@")) {
@@ -87,9 +87,4 @@ exports.deleteUser = async (req, res) => {
   } catch (err) {
     return errorHandler(res, err);
   }
-
-  // return res.status(404).json({
-  //   success: false,
-  //   message: "Error: User not found",
-  // });
 };
