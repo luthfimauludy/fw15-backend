@@ -74,16 +74,22 @@ exports.updateUser = async (req, res) => {
 };
 
 exports.deleteUser = async (req, res) => {
-  const data = await userModel.destroy(req.params.id);
-  if (data) {
+  try {
+    const data = await userModel.destroy(req.params.id);
+    if (!data) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Delete user successfully",
       results: data,
     });
+  } catch (err) {
+    return errorHandler(res, err);
   }
-  return res.status(404).json({
-    success: false,
-    message: "Error: User not found",
-  });
+
+  // return res.status(404).json({
+  //   success: false,
+  //   message: "Error: User not found",
+  // });
 };
