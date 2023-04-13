@@ -1,10 +1,10 @@
-const userModel = require("../models/users.model");
+const usersModel = require("../models/users.model");
 const errorHandler = require("../helpers/errorHandler.helper");
 const argon = require("argon2");
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const data = await userModel.findAll(
+    const data = await usersModel.findAll(
       req.query.page,
       req.query.limit,
       req.query.search,
@@ -22,7 +22,7 @@ exports.getAllUsers = async (req, res) => {
 };
 
 exports.getOneUser = async (req, res) => {
-  const data = await userModel.findOne(req.params.id);
+  const data = await usersModel.findOne(req.params.id);
   if (data) {
     return res.json({
       success: true,
@@ -32,7 +32,7 @@ exports.getOneUser = async (req, res) => {
   }
   return res.status(404).json({
     success: false,
-    message: "Error: User not found",
+    message: "Error: User is not found",
   });
 };
 
@@ -52,10 +52,7 @@ exports.createUser = async (req, res) => {
       ...req.body,
       password: hash,
     };
-    if (req.file) {
-      data.picture = req.file.filename;
-    }
-    const user = await userModel.insert(data);
+    const user = await usersModel.insert(data);
     return res.json({
       success: true,
       message: `Create user ${req.body.email} successfully`,
@@ -82,10 +79,7 @@ exports.updateUser = async (req, res) => {
       ...req.body,
       password: hash,
     };
-    if (req.file) {
-      data.picture = req.file.filename;
-    }
-    const user = await userModel.update(req.params.id, data);
+    const user = await usersModel.update(req.params.id, data);
     return res.json({
       success: true,
       message: "Update user successfully",
@@ -98,7 +92,7 @@ exports.updateUser = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
   try {
-    const data = await userModel.destroy(req.params.id);
+    const data = await usersModel.destroy(req.params.id);
     if (!data) {
       return errorHandler(res, undefined);
     }
