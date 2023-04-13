@@ -1,4 +1,5 @@
 const multer = require("multer");
+const errorHandler = require("../helpers/errorHandler.helper");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -29,19 +30,17 @@ const uploadMiddleware = (field) => {
   const uploadField = upload.single(field);
   return (req, res, next) => {
     uploadField(req, res, (err) => {
-      if (err) {
-        if (err.message === "fileformat_error") {
-          return res.status(400).json({
-            success: false,
-            message: "File format not valid",
-          });
+      try {
+        if (err) {
+          if (err.message === "fileformat_error") {
+            throw Error("fileformat_error");
+          }
+          throw Error(err.message);
         }
-        return res.status(400).json({
-          success: false,
-          message: "File too large",
-        });
+        return next();
+      } catch (err) {
+        return errorHandler(res, err);
       }
-      return next();
     });
   };
 };

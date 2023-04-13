@@ -68,20 +68,23 @@ exports.createUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
-    if (!req.body.fullName) {
-      throw Error("name_empty_field");
-    }
-    if (req.body.email == "" || req.body.password == "") {
-      throw Error("empty_field");
-    }
-    if (!req.body.email.includes("@")) {
-      throw Error("email_format");
-    }
+    // if (!req.body.fullName) {
+    //   throw Error("name_empty_field");
+    // }
+    // if (req.body.email == "" || req.body.password == "") {
+    //   throw Error("empty_field");
+    // }
+    // if (!req.body.email.includes("@")) {
+    //   throw Error("email_format");
+    // }
     const hash = await argon.hash(req.body.password);
     const data = {
       ...req.body,
       password: hash,
     };
+    if (req.file) {
+      data.picture = req.file.filename;
+    }
     const user = await userModel.update(req.params.id, data);
     return res.json({
       success: true,

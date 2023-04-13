@@ -14,19 +14,25 @@ const errorHandler = (res, err) => {
   if (err?.message?.includes("jwt malformed")) {
     return res.status(401).json({
       success: false,
-      message: "Error: Token not valid!",
+      message: "Error: Token is not valid!",
     });
   }
   if (err?.message?.includes("invalid signature")) {
     return res.status(401).json({
       success: false,
-      message: "Error: Token signature not valid!",
+      message: "Error: Token signature is not valid!",
+    });
+  }
+  if (err?.message?.includes("too large")) {
+    return res.status(400).json({
+      success: false,
+      message: "Error: File is too large!",
     });
   }
   if (err === undefined) {
     return res.status(404).json({
       success: false,
-      message: "Error: User not found!",
+      message: "Error: User is not found!",
     });
   }
   if (err?.message?.includes("name_empty_field")) {
@@ -44,7 +50,13 @@ const errorHandler = (res, err) => {
   if (err?.message?.includes("email_format")) {
     return res.status(400).json({
       success: false,
-      message: "Error: Email not valid!",
+      message: "Error: Email is not valid!",
+    });
+  }
+  if (err?.message?.includes("fileformat_error")) {
+    return res.status(400).json({
+      success: false,
+      message: "File format is not valid",
     });
   }
   if (err?.message?.includes("wrong_credentials")) {

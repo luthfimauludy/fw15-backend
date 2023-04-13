@@ -1,4 +1,4 @@
-const { body, validationResult } = require("express-validator");
+const { body, query, param, validationResult } = require("express-validator");
 // const errorHandler = require("../helpers/errorHandler.helper");
 
 const emailFormat = body("email").isEmail().withMessage("Email is not valid");
@@ -14,6 +14,17 @@ const rules = {
       .withMessage("Name length is not valid"),
     emailFormat,
     body("password").isStrongPassword().withMessage("Password must be strong"),
+  ],
+  getAllUsers: [
+    query("sortBy").isIn(["ASC", "DESC"]).withMessage("Sort type is not valid"),
+  ],
+  idParams: [
+    param("id")
+      .toInt()
+      .isDecimal()
+      .withMessage("Id is not valid")
+      .isInt({ min: 1 })
+      .withMessage("Id need to be more than 0"),
   ],
 };
 
