@@ -9,8 +9,8 @@ exports.findAll = async (page, limit, search, sort, sortBy) => {
 
   const offset = (page - 1) * limit;
   const query = `
-  SELECT * FROM "users"
-  WHERE "email" LIKE $3
+  SELECT * FROM "paymentMethods"
+  WHERE "name" LIKE $3
   ORDER BY ${sort} ${sortBy}
   LIMIT $1 OFFSET $2
   `;
@@ -21,53 +21,47 @@ exports.findAll = async (page, limit, search, sort, sortBy) => {
 
 exports.findOne = async (id) => {
   const query = `
-  SELECT * FROM "users"
-  WHERE id=$1
+  SELECT * FROM "paymentMethods" WHERE id=$1
   `;
   const values = [id];
   const { rows } = await db.query(query, values);
   return rows[0];
 };
 
-exports.findOneByEmail = async (email) => {
+exports.findOneByName = async (name) => {
   const query = `
-  SELECT * FROM "users"
-  WHERE email=$1
+  SELECT * FROM "paymentMethods" WHERE name=$1
   `;
-  const values = [email];
+  const values = [name];
   const { rows } = await db.query(query, values);
   return rows[0];
 };
 
 exports.insert = async (data) => {
   const query = `
-  INSERT INTO "users" ("username", "email", "password") 
-  VALUES ($1, $2, $3) 
+  INSERT INTO "paymentMethods" ("name") VALUES ($1)
   RETURNING *;
-`;
-  const values = [data.username, data.email, data.password];
+  `;
+  const values = [data.name];
   const { rows } = await db.query(query, values);
   return rows[0];
 };
 
 exports.update = async (id, data) => {
   const query = `
-  UPDATE "users" 
-  SET "username"=$2, "email"=$3 , "password"=$4
-  WHERE "id"=$1
+  UPDATE "paymentMethods" SET "name"=$2 WHERE "id"=$1
   RETURNING *;
-`;
-  const values = [id, data.username, data.email, data.password];
+  `;
+  const values = [id, data.name];
   const { rows } = await db.query(query, values);
   return rows[0];
 };
 
 exports.destroy = async (id) => {
   const query = `
-  DELETE FROM "users" 
-  WHERE "id"=$1
+  DELETE FROM "categories" WHERE "id"=$1
   RETURNING *;
-`;
+  `;
   const values = [id];
   const { rows } = await db.query(query, values);
   return rows[0];

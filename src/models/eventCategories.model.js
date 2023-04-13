@@ -9,8 +9,8 @@ exports.findAll = async (page, limit, search, sort, sortBy) => {
 
   const offset = (page - 1) * limit;
   const query = `
-  SELECT * FROM "users"
-  WHERE "email" LIKE $3
+  SELECT * FROM "eventCategories"
+  WHERE "eventId" LIKE $3
   ORDER BY ${sort} ${sortBy}
   LIMIT $1 OFFSET $2
   `;
@@ -21,53 +21,39 @@ exports.findAll = async (page, limit, search, sort, sortBy) => {
 
 exports.findOne = async (id) => {
   const query = `
-  SELECT * FROM "users"
-  WHERE id=$1
+  SELECT * FROM "eventCategories" WHERE id=$1
   `;
   const values = [id];
   const { rows } = await db.query(query, values);
   return rows[0];
 };
 
-exports.findOneByEmail = async (email) => {
-  const query = `
-  SELECT * FROM "users"
-  WHERE email=$1
-  `;
-  const values = [email];
-  const { rows } = await db.query(query, values);
-  return rows[0];
-};
-
 exports.insert = async (data) => {
   const query = `
-  INSERT INTO "users" ("username", "email", "password") 
-  VALUES ($1, $2, $3) 
+  INSERT INTO "eventCategories" ("eventId", "categoryId") VALUES ($1, $2)
   RETURNING *;
-`;
-  const values = [data.username, data.email, data.password];
+  `;
+  const values = [data.eventId, data.categoryId];
   const { rows } = await db.query(query, values);
   return rows[0];
 };
 
 exports.update = async (id, data) => {
   const query = `
-  UPDATE "users" 
-  SET "username"=$2, "email"=$3 , "password"=$4
+  UPDATE "eventCategories" SET "eventId"=$2, "categoryId"=$3
   WHERE "id"=$1
   RETURNING *;
-`;
-  const values = [id, data.username, data.email, data.password];
+  `;
+  const values = [id, data.eventId, data.categoryId];
   const { rows } = await db.query(query, values);
   return rows[0];
 };
 
 exports.destroy = async (id) => {
   const query = `
-  DELETE FROM "users" 
-  WHERE "id"=$1
+  DELETE FROM "eventCategories" WHERE "id"=$1
   RETURNING *;
-`;
+  `;
   const values = [id];
   const { rows } = await db.query(query, values);
   return rows[0];

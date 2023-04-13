@@ -9,8 +9,8 @@ exports.findAll = async (page, limit, search, sort, sortBy) => {
 
   const offset = (page - 1) * limit;
   const query = `
-  SELECT * FROM "users"
-  WHERE "email" LIKE $3
+  SELECT * FROM "events"
+  WHERE "title" LIKE $3
   ORDER BY ${sort} ${sortBy}
   LIMIT $1 OFFSET $2
   `;
@@ -21,53 +21,53 @@ exports.findAll = async (page, limit, search, sort, sortBy) => {
 
 exports.findOne = async (id) => {
   const query = `
-  SELECT * FROM "users"
-  WHERE id=$1
+  SELECT * FROM "events" WHERE id=$1
   `;
   const values = [id];
   const { rows } = await db.query(query, values);
   return rows[0];
 };
 
-exports.findOneByEmail = async (email) => {
-  const query = `
-  SELECT * FROM "users"
-  WHERE email=$1
-  `;
-  const values = [email];
-  const { rows } = await db.query(query, values);
-  return rows[0];
-};
-
 exports.insert = async (data) => {
   const query = `
-  INSERT INTO "users" ("username", "email", "password") 
-  VALUES ($1, $2, $3) 
+  INSERT INTO "events" ("picture", "title", "date", "cityId", "descriptions") 
+  VALUES ($1, $2, $3, $4, $5)
   RETURNING *;
-`;
-  const values = [data.username, data.email, data.password];
+  `;
+  const values = [
+    data.picture,
+    data.title,
+    data.date,
+    data.cityId,
+    data.descriptions,
+  ];
   const { rows } = await db.query(query, values);
   return rows[0];
 };
 
 exports.update = async (id, data) => {
   const query = `
-  UPDATE "users" 
-  SET "username"=$2, "email"=$3 , "password"=$4
+  UPDATE "events" SET "picture"=$2, "title"=$3, "date"=$4, "cityId"=$5, "descriptions"=$6
   WHERE "id"=$1
   RETURNING *;
-`;
-  const values = [id, data.username, data.email, data.password];
+  `;
+  const values = [
+    id,
+    data.picture,
+    data.title,
+    data.date,
+    data.cityId,
+    data.descriptions,
+  ];
   const { rows } = await db.query(query, values);
   return rows[0];
 };
 
 exports.destroy = async (id) => {
   const query = `
-  DELETE FROM "users" 
-  WHERE "id"=$1
+  DELETE FROM "events" WHERE "id"=$1
   RETURNING *;
-`;
+  `;
   const values = [id];
   const { rows } = await db.query(query, values);
   return rows[0];
