@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "b32f328e-aa62-40c3-a24c-2d98bf330776",
+		"_postman_id": "4dfeeb06-3379-4a02-a0e3-297cc1cda44b",
 		"name": "BACKEND APP",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "19566015"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -18,7 +17,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{url}}/admin/users",
+									"raw": "{{url}}/admin/users?search=fazz",
 									"host": [
 										"{{url}}"
 									],
@@ -39,8 +38,7 @@
 										},
 										{
 											"key": "search",
-											"value": "fazz",
-											"disabled": true
+											"value": "fazz"
 										},
 										{
 											"key": "sortBy",
@@ -88,17 +86,27 @@
 								"method": "POST",
 								"header": [],
 								"body": {
-									"mode": "urlencoded",
-									"urlencoded": [
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "fullName",
+											"value": "Horse",
+											"type": "default"
+										},
 										{
 											"key": "email",
-											"value": "dack@mail.com",
-											"type": "text"
+											"value": "horse9@mail.com",
+											"type": "default"
 										},
 										{
 											"key": "password",
-											"value": "",
-											"type": "text"
+											"value": "!@#123Abc",
+											"type": "default"
+										},
+										{
+											"key": "picture",
+											"type": "file",
+											"src": "/E:/Bootcamp/Week 1/Tugas-HTML-CSS-Tailwind/assets/atm.png"
 										}
 									]
 								},
@@ -124,13 +132,18 @@
 									"mode": "urlencoded",
 									"urlencoded": [
 										{
+											"key": "fullName",
+											"value": "John Cena",
+											"type": "default"
+										},
+										{
 											"key": "email",
-											"value": "fazz@mail.com",
+											"value": "john@mail.com",
 											"type": "text"
 										},
 										{
 											"key": "password",
-											"value": "1234",
+											"value": "4321",
 											"type": "text"
 										}
 									]
@@ -148,7 +161,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "3"
+											"value": "28"
 										}
 									]
 								}
@@ -173,7 +186,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "47"
+											"value": "24"
 										}
 									]
 								}
@@ -197,7 +210,7 @@
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "growny@mail.com",
+									"value": "bob@mail.com",
 									"type": "text"
 								},
 								{
@@ -229,8 +242,13 @@
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
+									"key": "fullName",
+									"value": "Bobby",
+									"type": "default"
+								},
+								{
 									"key": "email",
-									"value": "fazztrack@mail.com",
+									"value": "bob@mail.com",
 									"type": "text"
 								},
 								{
@@ -280,7 +298,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjgxMTk2ODQxfQ.gYwtJKJOnpj09lJWboUTNVcxbzlgnZxK56ZPX9FBUJc",
+				"value": "{{token}}",
 				"type": "string"
 			}
 		]

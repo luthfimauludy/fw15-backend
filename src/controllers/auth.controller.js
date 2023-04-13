@@ -8,7 +8,11 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await userModel.findOneByEmail(email);
-    if (!user || password !== user?.password) {
+    if (!user) {
+      throw Error("wrong_credentials");
+    }
+    const verify = await argon.verify(user.password, password);
+    if (!verify) {
       throw Error("wrong_credentials");
     }
     const token = jwt.sign({ id: user.id }, APP_SECRET);

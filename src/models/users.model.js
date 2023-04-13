@@ -1,6 +1,6 @@
 const db = require("../helpers/db.helper");
 
-exports.findAll = async function (page, limit, search, sort, sortBy) {
+exports.findAll = async (page, limit, search, sort, sortBy) => {
   page = parseInt(page) || 1;
   limit = parseInt(limit) || 5;
   search = search || "";
@@ -19,7 +19,7 @@ exports.findAll = async function (page, limit, search, sort, sortBy) {
   return rows;
 };
 
-exports.findOne = async function (id) {
+exports.findOne = async (id) => {
   const query = `
   SELECT * FROM "users"
   WHERE id=$1
@@ -29,7 +29,7 @@ exports.findOne = async function (id) {
   return rows[0];
 };
 
-exports.findOneByEmail = async function (email) {
+exports.findOneByEmail = async (email) => {
   const query = `
   SELECT * FROM "users"
   WHERE email=$1
@@ -39,30 +39,30 @@ exports.findOneByEmail = async function (email) {
   return rows[0];
 };
 
-exports.insert = async function (data) {
+exports.insert = async (data) => {
   const query = `
-  INSERT INTO "users" ("email", "password") 
-  VALUES ($1, $2) 
+  INSERT INTO "users" ("fullName", "email", "password", "picture") 
+  VALUES ($1, $2, $3, $4) 
   RETURNING *;
 `;
-  const values = [data.email, data.password];
+  const values = [data.fullName, data.email, data.password, data.picture];
   const { rows } = await db.query(query, values);
   return rows[0];
 };
 
-exports.update = async function (id, data) {
+exports.update = async (id, data) => {
   const query = `
   UPDATE "users" 
-  SET "email"=$2, "password"=$3 
+  SET "fullName"=$2, "email"=$3 , "password"=$4, "picture"=$5
   WHERE "id"=$1
   RETURNING *;
 `;
-  const values = [id, data.email, data.password];
+  const values = [id, data.fullName, data.email, data.password, data.picture];
   const { rows } = await db.query(query, values);
   return rows[0];
 };
 
-exports.destroy = async function (id) {
+exports.destroy = async (id) => {
   const query = `
   DELETE FROM "users" 
   WHERE "id"=$1

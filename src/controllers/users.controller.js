@@ -1,5 +1,6 @@
 const userModel = require("../models/users.model");
 const errorHandler = require("../helpers/errorHandler.helper");
+const argon = require("argon2");
 
 exports.getAllUsers = async (req, res) => {
   try {
@@ -37,17 +38,28 @@ exports.getOneUser = async (req, res) => {
 
 exports.createUser = async (req, res) => {
   try {
-    if (req.body.email == "" || req.body.password == "") {
-      throw Error("empty_field");
+    // if (!req.body.fullName) {
+    //   throw Error("name_empty_field");
+    // }
+    // if (req.body.email == "" || req.body.password == "") {
+    //   throw Error("empty_field");
+    // }
+    // if (!req.body.email.includes("@")) {
+    //   throw Error("email_format");
+    // }
+    const hash = await argon.hash(req.body.password);
+    const data = {
+      ...req.body,
+      password: hash,
+    };
+    if (req.file) {
+      data.picture = req.file.filename;
     }
-    if (!req.body.email.includes("@")) {
-      throw Error("email_format");
-    }
-    const data = await userModel.insert(req.body);
+    const user = await userModel.insert(data);
     return res.json({
       success: true,
       message: `Create user ${req.body.email} successfully`,
-      results: data,
+      results: user,
     });
   } catch (err) {
     return errorHandler(res, err);
@@ -56,17 +68,25 @@ exports.createUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
+    if (!req.body.fullName) {
+      throw Error("name_empty_field");
+    }
     if (req.body.email == "" || req.body.password == "") {
       throw Error("empty_field");
     }
     if (!req.body.email.includes("@")) {
       throw Error("email_format");
     }
-    const data = await userModel.update(req.params.id, req.body);
+    const hash = await argon.hash(req.body.password);
+    const data = {
+      ...req.body,
+      password: hash,
+    };
+    const user = await userModel.update(req.params.id, data);
     return res.json({
       success: true,
       message: "Update user successfully",
-      results: data,
+      results: user,
     });
   } catch (err) {
     return errorHandler(res, err);
