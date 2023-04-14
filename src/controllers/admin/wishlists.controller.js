@@ -1,5 +1,5 @@
-const wishlistsModel = require("../models/wishlists.model");
-const errorHandler = require("../helpers/errorHandler.helper");
+const wishlistsModel = require("../../models/wishlists.model");
+const errorHandler = require("../../helpers/errorHandler.helper");
 
 exports.getAllWishlists = async (req, res) => {
   try {
@@ -37,10 +37,11 @@ exports.getOneWishlist = async (req, res) => {
 
 exports.createWishlist = async (req, res) => {
   try {
+    const data = { ...req.body };
     const wishlist = await wishlistsModel.insert(data);
     return res.json({
       success: true,
-      message: `Create wishlist ${req.body.userId} successfully`,
+      message: `Create wishlist successfully`,
       results: wishlist,
     });
   } catch (err) {
@@ -50,6 +51,7 @@ exports.createWishlist = async (req, res) => {
 
 exports.updateWishlist = async (req, res) => {
   try {
+    const data = { ...req.body };
     const wishlist = await wishlistsModel.update(req.params.id, data);
     return res.json({
       success: true,

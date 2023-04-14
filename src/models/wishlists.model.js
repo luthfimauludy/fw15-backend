@@ -1,5 +1,7 @@
 const db = require("../helpers/db.helper");
 
+const table = "wishlists";
+
 exports.findAll = async (page, limit, search, sort, sortBy) => {
   page = parseInt(page) || 1;
   limit = parseInt(limit) || 5;
@@ -9,7 +11,7 @@ exports.findAll = async (page, limit, search, sort, sortBy) => {
 
   const offset = (page - 1) * limit;
   const query = `
-  SELECT * FROM "wishlists"
+  SELECT * FROM "${table}"
   WHERE "eventId" LIKE $3
   ORDER BY ${sort} ${sortBy}
   LIMIT $1 OFFSET $2
@@ -21,7 +23,7 @@ exports.findAll = async (page, limit, search, sort, sortBy) => {
 
 exports.findOne = async (id) => {
   const query = `
-  SELECT * FROM "wishlists" WHERE id=$1
+  SELECT * FROM "${table}" WHERE id=$1
   `;
   const values = [id];
   const { rows } = await db.query(query, values);
@@ -30,7 +32,7 @@ exports.findOne = async (id) => {
 
 exports.insert = async (data) => {
   const query = `
-  INSERT INTO "wishlists" ("eventId", "userId") 
+  INSERT INTO "${table}" ("eventId", "userId") 
   VALUES ($1, $2)
   RETURNING *;
   `;
@@ -41,7 +43,10 @@ exports.insert = async (data) => {
 
 exports.update = async (id, data) => {
   const query = `
-  UPDATE "wishlists" SET "eventId"=$2, "userId"=$3
+  UPDATE "${table}" 
+  SET 
+  "eventId"=COALESCE(NULLIF($2::INTEGER, NULL), "eventId"),
+  "userId"=COALESCE(NULLIF($3::INTEGER, NULL), "userId")
   WHERE "id"=$1
   RETURNING *;
   `;
@@ -52,7 +57,7 @@ exports.update = async (id, data) => {
 
 exports.destroy = async (id) => {
   const query = `
-  DELETE FROM "wishlists" WHERE "id"=$1
+  DELETE FROM "${table}" WHERE "id"=$1
   RETURNING *;
   `;
   const values = [id];

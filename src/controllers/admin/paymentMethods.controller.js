@@ -1,5 +1,5 @@
-const paymentMethodsModel = require("../models/paymentMethods.model");
-const errorHandler = require("../helpers/errorHandler.helper");
+const paymentMethodsModel = require("../../models/paymentMethods.model");
+const errorHandler = require("../../helpers/errorHandler.helper");
 
 exports.getAllPaymentMethods = async (req, res) => {
   try {
@@ -37,6 +37,7 @@ exports.getOnePaymentMethod = async (req, res) => {
 
 exports.createPaymentMethod = async (req, res) => {
   try {
+    const data = { ...req.body };
     const paymentMethod = await paymentMethodsModel.insert(data);
     return res.json({
       success: true,
@@ -50,6 +51,7 @@ exports.createPaymentMethod = async (req, res) => {
 
 exports.updatePaymentMethod = async (req, res) => {
   try {
+    const data = { ...req.body };
     const paymentMethod = await paymentMethodsModel.update(req.params.id, data);
     return res.json({
       success: true,

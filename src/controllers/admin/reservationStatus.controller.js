@@ -1,7 +1,7 @@
-const reservationStatusModel = require("../models/reservationStatus.model");
-const errorHandler = require("../helpers/errorHandler.helper");
+const reservationStatusModel = require("../../models/reservationStatus.model");
+const errorHandler = require("../../helpers/errorHandler.helper");
 
-exports.getAllReservationsStatus = async (req, res) => {
+exports.getAllReservationStatus = async (req, res) => {
   try {
     const data = await reservationStatusModel.findAll(
       req.query.page,
@@ -37,6 +37,7 @@ exports.getOneReservationStatus = async (req, res) => {
 
 exports.createReservationStatus = async (req, res) => {
   try {
+    const data = { ...req.body };
     const reservationStatus = await reservationStatusModel.insert(data);
     return res.json({
       success: true,
@@ -50,6 +51,7 @@ exports.createReservationStatus = async (req, res) => {
 
 exports.updateReservationStatus = async (req, res) => {
   try {
+    const data = { ...req.body };
     const reservationStatus = await reservationStatusModel.update(
       req.params.id,
       data

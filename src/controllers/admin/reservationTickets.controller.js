@@ -1,7 +1,7 @@
-const reservationTicketsModel = require("../models/reservationTickets.model");
-const errorHandler = require("../helpers/errorHandler.helper");
+const reservationTicketsModel = require("../../models/reservationTickets.model");
+const errorHandler = require("../../helpers/errorHandler.helper");
 
-exports.getAllReservationsTickets = async (req, res) => {
+exports.getAllReservationTickets = async (req, res) => {
   try {
     const data = await reservationTicketsModel.findAll(
       req.query.page,
@@ -20,7 +20,7 @@ exports.getAllReservationsTickets = async (req, res) => {
   }
 };
 
-exports.getOneReservationTickets = async (req, res) => {
+exports.getOneReservationTicket = async (req, res) => {
   const data = await reservationTicketsModel.findOne(req.params.id);
   if (data) {
     return res.json({
@@ -35,12 +35,13 @@ exports.getOneReservationTickets = async (req, res) => {
   });
 };
 
-exports.createReservationTickets = async (req, res) => {
+exports.createReservationTicket = async (req, res) => {
   try {
+    const data = { ...req.body };
     const reservationTickets = await reservationTicketsModel.insert(data);
     return res.json({
       success: true,
-      message: `Create reservation ticket ${req.body.reservationId} successfully`,
+      message: `Create reservation ticket successfully`,
       results: reservationTickets,
     });
   } catch (err) {
@@ -48,8 +49,9 @@ exports.createReservationTickets = async (req, res) => {
   }
 };
 
-exports.updateReservationTickets = async (req, res) => {
+exports.updateReservationTicket = async (req, res) => {
   try {
+    const data = { ...req.body };
     const reservationTickets = await reservationTicketsModel.update(
       req.params.id,
       data
@@ -64,7 +66,7 @@ exports.updateReservationTickets = async (req, res) => {
   }
 };
 
-exports.deleteReservationTickets = async (req, res) => {
+exports.deleteReservationTicket = async (req, res) => {
   try {
     const data = await reservationTicketsModel.destroy(req.params.id);
     if (!data) {

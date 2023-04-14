@@ -1,7 +1,7 @@
-const reservationSectionsModel = require("../models/reservationSections.model");
-const errorHandler = require("../helpers/errorHandler.helper");
+const reservationSectionsModel = require("../../models/reservationSections.model");
+const errorHandler = require("../../helpers/errorHandler.helper");
 
-exports.getAllReservationsSections = async (req, res) => {
+exports.getAllReservationSections = async (req, res) => {
   try {
     const data = await reservationSectionsModel.findAll(
       req.query.page,
@@ -20,7 +20,7 @@ exports.getAllReservationsSections = async (req, res) => {
   }
 };
 
-exports.getOneReservationSections = async (req, res) => {
+exports.getOneReservationSection = async (req, res) => {
   const data = await reservationSectionsModel.findOne(req.params.id);
   if (data) {
     return res.json({
@@ -35,8 +35,9 @@ exports.getOneReservationSections = async (req, res) => {
   });
 };
 
-exports.createReservationSections = async (req, res) => {
+exports.createReservationSection = async (req, res) => {
   try {
+    const data = { ...req.body };
     const reservationSection = await reservationSectionsModel.insert(data);
     return res.json({
       success: true,
@@ -48,8 +49,9 @@ exports.createReservationSections = async (req, res) => {
   }
 };
 
-exports.updateReservationSections = async (req, res) => {
+exports.updateReservationSection = async (req, res) => {
   try {
+    const data = { ...req.body };
     const reservationSection = await reservationSectionsModel.update(
       req.params.id,
       data
@@ -64,7 +66,7 @@ exports.updateReservationSections = async (req, res) => {
   }
 };
 
-exports.deleteReservationSections = async (req, res) => {
+exports.deleteReservationSection = async (req, res) => {
   try {
     const data = await reservationSectionsModel.destroy(req.params.id);
     if (!data) {

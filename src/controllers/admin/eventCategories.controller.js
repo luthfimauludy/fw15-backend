@@ -1,5 +1,5 @@
-const eventCategoriesModel = require("../models/eventCategories.model");
-const errorHandler = require("../helpers/errorHandler.helper");
+const eventCategoriesModel = require("../../models/eventCategories.model");
+const errorHandler = require("../../helpers/errorHandler.helper");
 
 exports.getAllEventCategories = async (req, res) => {
   try {
@@ -37,10 +37,11 @@ exports.getOneEventCategory = async (req, res) => {
 
 exports.createEventCategory = async (req, res) => {
   try {
+    const data = { ...req.body };
     const eventCategory = await eventCategoriesModel.insert(data);
     return res.json({
       success: true,
-      message: `Create event category ${req.body.categoryId} successfully`,
+      message: `Create event category successfully`,
       results: eventCategory,
     });
   } catch (err) {
@@ -50,6 +51,7 @@ exports.createEventCategory = async (req, res) => {
 
 exports.updateEventCategory = async (req, res) => {
   try {
+    const data = { ...req.body };
     const eventCategory = await eventCategoriesModel.update(
       req.params.id,
       data
