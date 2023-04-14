@@ -3,17 +3,12 @@ const errorHandler = require("../../helpers/errorHandler.helper");
 
 exports.getAllReservationStatus = async (req, res) => {
   try {
-    const data = await reservationStatusModel.findAll(
-      req.query.page,
-      req.query.limit,
-      req.query.search,
-      req.query.sort,
-      req.query.sortBy
-    );
+    const data = { ...req.query };
+    const reservationStatus = await reservationStatusModel.findAll(data);
     return res.json({
       success: true,
       message: "List of all reservation status",
-      results: data,
+      results: reservationStatus,
     });
   } catch (err) {
     return errorHandler(res, err);

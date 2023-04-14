@@ -3,17 +3,12 @@ const errorHandler = require("../../helpers/errorHandler.helper");
 
 exports.getAllEvents = async (req, res) => {
   try {
-    const data = await eventsModel.findAll(
-      req.query.page,
-      req.query.limit,
-      req.query.search,
-      req.query.sort,
-      req.query.sortBy
-    );
+    const data = { ...req.query };
+    const event = await eventsModel.findAll(data);
     return res.json({
       success: true,
       message: "List of all events",
-      results: data,
+      results: event,
     });
   } catch (err) {
     return errorHandler(res, err);

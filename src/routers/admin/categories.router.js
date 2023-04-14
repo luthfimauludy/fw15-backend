@@ -4,7 +4,7 @@ const validate = require("../../middlewares/validator.middleware");
 
 categoryRouter.get(
   "/",
-  validate("getAllUsers"),
+  validate("getAllCategories"),
   categoryController.getAllCategories
 );
 categoryRouter.get(
@@ -14,13 +14,13 @@ categoryRouter.get(
 );
 categoryRouter.post(
   "/",
-  validate("createUser"),
+  validate("createCategory"),
   categoryController.createCategory
 );
 categoryRouter.patch(
   "/:id",
   validate("idParams"),
-  validate("createUser"),
+  validate("createCategory"),
   categoryController.updateCategory
 );
 categoryRouter.delete(

@@ -3,17 +3,12 @@ const errorHandler = require("../../helpers/errorHandler.helper");
 
 exports.getAllCategories = async (req, res) => {
   try {
-    const data = await categoriesModel.findAll(
-      req.query.page,
-      req.query.limit,
-      req.query.search,
-      req.query.sort,
-      req.query.sortBy
-    );
+    const data = { ...req.query };
+    const category = await categoriesModel.findAll(data);
     return res.json({
       success: true,
       message: "List of all categories",
-      results: data,
+      results: category,
     });
   } catch (err) {
     return errorHandler(res, err);
@@ -54,6 +49,9 @@ exports.updateCategory = async (req, res) => {
   try {
     const data = { ...req.body };
     const category = await categoriesModel.update(req.params.id, data);
+    if (!category) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Update category successfully",

@@ -1,5 +1,7 @@
 const db = require("../helpers/db.helper");
 
+const table = "users";
+
 exports.findAll = async (page, limit, search, sort, sortBy) => {
   page = parseInt(page) || 1;
   limit = parseInt(limit) || 5;
@@ -9,7 +11,7 @@ exports.findAll = async (page, limit, search, sort, sortBy) => {
 
   const offset = (page - 1) * limit;
   const query = `
-  SELECT * FROM "users"
+  SELECT * FROM "${table}"
   WHERE "email" LIKE $3
   ORDER BY ${sort} ${sortBy}
   LIMIT $1 OFFSET $2
@@ -21,8 +23,7 @@ exports.findAll = async (page, limit, search, sort, sortBy) => {
 
 exports.findOne = async (id) => {
   const query = `
-  SELECT * FROM "users"
-  WHERE id=$1
+  SELECT * FROM "${table}" WHERE id=$1
   `;
   const values = [id];
   const { rows } = await db.query(query, values);
@@ -31,8 +32,7 @@ exports.findOne = async (id) => {
 
 exports.findOneByEmail = async (email) => {
   const query = `
-  SELECT * FROM "users"
-  WHERE email=$1
+  SELECT * FROM "${table}" WHERE email=$1
   `;
   const values = [email];
   const { rows } = await db.query(query, values);
@@ -41,7 +41,7 @@ exports.findOneByEmail = async (email) => {
 
 exports.insert = async (data) => {
   const query = `
-  INSERT INTO "users" ("username", "email", "password") 
+  INSERT INTO "${table}" ("username", "email", "password") 
   VALUES ($1, $2, $3) 
   RETURNING *;
 `;
@@ -52,8 +52,11 @@ exports.insert = async (data) => {
 
 exports.update = async (id, data) => {
   const query = `
-  UPDATE "users" 
-  SET "username"=$2, "email"=$3 , "password"=$4
+  UPDATE "${table}" 
+  SET 
+  "username"=COALESCE(NULLIF($2, ''), "username"),
+  "email"=COALESCE(NULLIF($3, ''), "email"),
+  "password"=COALESCE(NULLIF($4, ''), "username")
   WHERE "id"=$1
   RETURNING *;
 `;
@@ -64,8 +67,7 @@ exports.update = async (id, data) => {
 
 exports.destroy = async (id) => {
   const query = `
-  DELETE FROM "users" 
-  WHERE "id"=$1
+  DELETE FROM "${table}" WHERE "id"=$1
   RETURNING *;
 `;
   const values = [id];

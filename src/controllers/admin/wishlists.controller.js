@@ -3,17 +3,12 @@ const errorHandler = require("../../helpers/errorHandler.helper");
 
 exports.getAllWishlists = async (req, res) => {
   try {
-    const data = await wishlistsModel.findAll(
-      req.query.page,
-      req.query.limit,
-      req.query.search,
-      req.query.sort,
-      req.query.sortBy
-    );
+    const data = { ...req.query };
+    const wishlist = await wishlistsModel.findAll(data);
     return res.json({
       success: true,
       message: "List of all wishlists",
-      results: data,
+      results: wishlist,
     });
   } catch (err) {
     return errorHandler(res, err);

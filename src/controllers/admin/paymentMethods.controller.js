@@ -3,17 +3,12 @@ const errorHandler = require("../../helpers/errorHandler.helper");
 
 exports.getAllPaymentMethods = async (req, res) => {
   try {
-    const data = await paymentMethodsModel.findAll(
-      req.query.page,
-      req.query.limit,
-      req.query.search,
-      req.query.sort,
-      req.query.sortBy
-    );
+    const data = { ...req.query };
+    const paymentMethod = await paymentMethodsModel.findAll(data);
     return res.json({
       success: true,
       message: "List of all payment methods",
-      results: data,
+      results: paymentMethod,
     });
   } catch (err) {
     return errorHandler(res, err);

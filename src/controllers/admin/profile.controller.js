@@ -3,17 +3,12 @@ const errorHandler = require("../../helpers/errorHandler.helper");
 
 exports.getAllProfiles = async (req, res) => {
   try {
-    const data = await profileModel.findAll(
-      req.query.page,
-      req.query.limit,
-      req.query.search,
-      req.query.sort,
-      req.query.sortBy
-    );
+    const data = { ...req.query };
+    const profile = await profileModel.findAll(data);
     return res.json({
       success: true,
       message: "List of all profiles",
-      results: data,
+      results: profile,
     });
   } catch (err) {
     return errorHandler(res, err);

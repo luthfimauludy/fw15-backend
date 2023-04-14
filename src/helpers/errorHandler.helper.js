@@ -32,7 +32,7 @@ const errorHandler = (res, err) => {
   if (err === undefined) {
     return res.status(404).json({
       success: false,
-      message: "Error: User is not found!",
+      message: "Error: Not found!",
     });
   }
   if (err?.message?.includes("name_empty_field")) {
@@ -56,7 +56,7 @@ const errorHandler = (res, err) => {
   if (err?.message?.includes("fileformat_error")) {
     return res.status(400).json({
       success: false,
-      message: "File format is not valid",
+      message: "Error: File format is not valid",
     });
   }
   if (err?.message?.includes("wrong_credentials")) {

@@ -4,17 +4,12 @@ const argon = require("argon2");
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const data = await usersModel.findAll(
-      req.query.page,
-      req.query.limit,
-      req.query.search,
-      req.query.sort,
-      req.query.sortBy
-    );
+    const data = { ...req.query };
+    const user = await usersModel.findAll(data);
     return res.json({
       success: true,
       message: "List of all users",
-      results: data,
+      results: user,
     });
   } catch (err) {
     return errorHandler(res, err);
@@ -22,18 +17,19 @@ exports.getAllUsers = async (req, res) => {
 };
 
 exports.getOneUser = async (req, res) => {
-  const data = await usersModel.findOne(req.params.id);
-  if (data) {
+  try {
+    const data = await usersModel.findOne(req.params.id);
+    if (!data) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Detail user",
       results: data,
     });
+  } catch (err) {
+    return errorHandler(res, err);
   }
-  return res.status(404).json({
-    success: false,
-    message: "Error: User is not found",
-  });
 };
 
 exports.createUser = async (req, res) => {
