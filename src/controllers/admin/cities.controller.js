@@ -1,5 +1,5 @@
-const citiesModel = require("../models/cities.model");
-const errorHandler = require("../helpers/errorHandler.helper");
+const citiesModel = require("../../models/cities.model");
+const errorHandler = require("../../helpers/errorHandler.helper");
 
 exports.getAllCities = async (req, res) => {
   try {
@@ -37,6 +37,7 @@ exports.getOneCity = async (req, res) => {
 
 exports.createCity = async (req, res) => {
   try {
+    const data = { ...req.body };
     if (req.file) {
       data.picture = req.file.filename;
     }
@@ -53,6 +54,7 @@ exports.createCity = async (req, res) => {
 
 exports.updateCity = async (req, res) => {
   try {
+    const data = { ...req.body };
     if (req.file) {
       data.picture = req.file.filename;
     }

@@ -1,5 +1,5 @@
-const reservationsModel = require("../models/reservations.model");
-const errorHandler = require("../helpers/errorHandler.helper");
+const reservationsModel = require("../../models/reservations.model");
+const errorHandler = require("../../helpers/errorHandler.helper");
 
 exports.getAllReservations = async (req, res) => {
   try {
@@ -37,10 +37,11 @@ exports.getOneReservation = async (req, res) => {
 
 exports.createReservation = async (req, res) => {
   try {
+    const data = { ...req.body };
     const reservation = await reservationsModel.insert(data);
     return res.json({
       success: true,
-      message: `Create reservation ${req.body.userId} successfully`,
+      message: `Create reservation successfully`,
       results: reservation,
     });
   } catch (err) {
@@ -50,6 +51,7 @@ exports.createReservation = async (req, res) => {
 
 exports.updateReservation = async (req, res) => {
   try {
+    const data = { ...req.body };
     const reservation = await reservationsModel.update(req.params.id, data);
     return res.json({
       success: true,

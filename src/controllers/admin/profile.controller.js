@@ -1,5 +1,5 @@
-const profileModel = require("../models/profile.model");
-const errorHandler = require("../helpers/errorHandler.helper");
+const profileModel = require("../../models/profile.model");
+const errorHandler = require("../../helpers/errorHandler.helper");
 
 exports.getAllProfiles = async (req, res) => {
   try {
@@ -37,6 +37,7 @@ exports.getOneProfile = async (req, res) => {
 
 exports.createProfile = async (req, res) => {
   try {
+    const data = { ...req.body };
     if (req.file) {
       data.picture = req.file.filename;
     }
@@ -53,6 +54,7 @@ exports.createProfile = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   try {
+    const data = { ...req.body };
     if (req.file) {
       data.picture = req.file.filename;
     }

@@ -1,5 +1,5 @@
-const usersModel = require("../models/users.model");
-const errorHandler = require("../helpers/errorHandler.helper");
+const usersModel = require("../../models/users.model");
+const errorHandler = require("../../helpers/errorHandler.helper");
 const argon = require("argon2");
 
 exports.getAllUsers = async (req, res) => {

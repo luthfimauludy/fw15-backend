@@ -8,7 +8,7 @@ const rules = {
     emailFormat,
     body("password").isLength({ min: 1 }).withMessage("Password is not valid"),
   ],
-  createCategory: [
+  createUser: [
     body("name")
       .isLength({ min: 3, max: 80 })
       .withMessage("Name length is not valid"),

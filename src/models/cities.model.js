@@ -1,5 +1,7 @@
 const db = require("../helpers/db.helper");
 
+const table = "cities";
+
 exports.findAll = async (page, limit, search, sort, sortBy) => {
   page = parseInt(page) || 1;
   limit = parseInt(limit) || 5;
@@ -9,7 +11,7 @@ exports.findAll = async (page, limit, search, sort, sortBy) => {
 
   const offset = (page - 1) * limit;
   const query = `
-  SELECT * FROM "cities"
+  SELECT * FROM "${table}"
   WHERE "name" LIKE $3
   ORDER BY ${sort} ${sortBy}
   LIMIT $1 OFFSET $2
@@ -21,7 +23,7 @@ exports.findAll = async (page, limit, search, sort, sortBy) => {
 
 exports.findOne = async (id) => {
   const query = `
-  SELECT * FROM "cities" WHERE id=$1
+  SELECT * FROM "${table}" WHERE id=$1
   `;
   const values = [id];
   const { rows } = await db.query(query, values);
@@ -30,7 +32,7 @@ exports.findOne = async (id) => {
 
 exports.findOneByName = async (name) => {
   const query = `
-  SELECT * FROM "cities" WHERE name=$1
+  SELECT * FROM "${table}" WHERE name=$1
   `;
   const values = [name];
   const { rows } = await db.query(query, values);
@@ -39,7 +41,7 @@ exports.findOneByName = async (name) => {
 
 exports.insert = async (data) => {
   const query = `
-  INSERT INTO "cities" ("picture", "name") VALUES ($1, $2)
+  INSERT INTO "${table}" ("picture", "name") VALUES ($1, $2)
   RETURNING *;
   `;
   const values = [data.picture, data.name];
@@ -49,7 +51,10 @@ exports.insert = async (data) => {
 
 exports.update = async (id, data) => {
   const query = `
-  UPDATE "cities" SET "picture"=$2, "name"=$3
+  UPDATE "${table}" 
+  SET 
+  "picture"=COALESCE(NULLIF($2, ''), "picture"),
+  "name"=COALESCE(NULLIF($3, ''), "name")
   WHERE "id"=$1
   RETURNING *;
   `;
@@ -60,7 +65,7 @@ exports.update = async (id, data) => {
 
 exports.destroy = async (id) => {
   const query = `
-  DELETE FROM "cities" WHERE "id"=$1
+  DELETE FROM "${table}" WHERE "id"=$1
   RETURNING *;
   `;
   const values = [id];

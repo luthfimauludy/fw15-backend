@@ -1,5 +1,7 @@
 const db = require("../helpers/db.helper");
 
+const table = "profile";
+
 exports.findAll = async (page, limit, search, sort, sortBy) => {
   page = parseInt(page) || 1;
   limit = parseInt(limit) || 5;
@@ -9,7 +11,7 @@ exports.findAll = async (page, limit, search, sort, sortBy) => {
 
   const offset = (page - 1) * limit;
   const query = `
-  SELECT * FROM "profile"
+  SELECT * FROM "${table}"
   WHERE "fullName" LIKE $3
   ORDER BY ${sort} ${sortBy}
   LIMIT $1 OFFSET $2
@@ -21,7 +23,7 @@ exports.findAll = async (page, limit, search, sort, sortBy) => {
 
 exports.findOne = async (id) => {
   const query = `
-  SELECT * FROM "profile" WHERE id=$1
+  SELECT * FROM "${table}" WHERE id=$1
   `;
   const values = [id];
   const { rows } = await db.query(query, values);
@@ -30,7 +32,7 @@ exports.findOne = async (id) => {
 
 exports.findOneByName = async (fullName) => {
   const query = `
-  SELECT * FROM "categories" WHERE fullName=$1
+  SELECT * FROM "${table}" WHERE fullName=$1
   `;
   const values = [fullName];
   const { rows } = await db.query(query, values);
@@ -39,7 +41,7 @@ exports.findOneByName = async (fullName) => {
 
 exports.insert = async (data) => {
   const query = `
-  INSERT INTO "profile" ("picture", "fullName", "phoneNumber", "gender", "profession", "nasionality", "birthDate") 
+  INSERT INTO "${table}" ("picture", "fullName", "phoneNumber", "gender", "profession", "nasionality", "birthDate") 
   VALUES ($1, $2, $3, $4, $5, $6, $7)
   RETURNING *;
   `;
@@ -58,7 +60,15 @@ exports.insert = async (data) => {
 
 exports.update = async (id, data) => {
   const query = `
-  UPDATE "profile" SET "picture"=$2, "fullName"=$3, "phoneNumber"=$4, "gender"=$5, "profession"=$6, "nasionality"=$7, "birthDate"=$8
+  UPDATE "${table}" 
+  SET 
+  "picture"=COALESCE(NULLIF($2, ''), "picture"),
+  "fullName"=COALESCE(NULLIF($3, ''), "fullName"),
+  "phoneNumber"=COALESCE(NULLIF($4, ''), "phoneNumber"),
+  "gender"=COALESCE(NULLIF($5, FALSE), "gender"),
+  "profession"=COALESCE(NULLIF($6, ''), "profession"),
+  "nasionality"=COALESCE(NULLIF($7, ''), "nasionality"),
+  "birthDate"=COALESCE(NULLIF($8::DATE, NULL), "birthDate")
   WHERE "id"=$1
   RETURNING *;
   `;
@@ -78,7 +88,7 @@ exports.update = async (id, data) => {
 
 exports.destroy = async (id) => {
   const query = `
-  DELETE FROM "profile" WHERE "id"=$1
+  DELETE FROM "${table}" WHERE "id"=$1
   RETURNING *;
   `;
   const values = [id];
