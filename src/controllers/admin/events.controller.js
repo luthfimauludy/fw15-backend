@@ -16,18 +16,19 @@ exports.getAllEvents = async (req, res) => {
 };
 
 exports.getOneEvent = async (req, res) => {
-  const data = await eventsModel.findOne(req.params.id);
-  if (data) {
+  try {
+    const data = await eventsModel.findOne(req.params.id);
+    if (!data) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Detail event",
       results: data,
     });
+  } catch (err) {
+    return errorHandler(res, err);
   }
-  return res.status(404).json({
-    success: false,
-    message: "Error: Event is not found",
-  });
 };
 
 exports.createEvent = async (req, res) => {
@@ -54,6 +55,9 @@ exports.updateEvent = async (req, res) => {
       data.picture = req.file.filename;
     }
     const event = await eventsModel.update(req.params.id, data);
+    if (!event) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Update event successfully",

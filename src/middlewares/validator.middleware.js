@@ -1,15 +1,42 @@
 const { body, query, param, validationResult } = require("express-validator");
-// const errorHandler = require("../helpers/errorHandler.helper");
 
 const nameFormat = body("name")
   .notEmpty()
   .withMessage("Name cannot be empty")
   .isLength({ min: 3, max: 80 })
   .withMessage("Name length is not valid");
+
+const titleFormat = body("title")
+  .notEmpty()
+  .withMessage("Title cannot be empty")
+  .isLength({ min: 3, max: 80 })
+  .withMessage("Title length is not valid");
+
 const emailFormat = body("email").isEmail().withMessage("Email is not valid");
+
 const queryFormat = query("sortBy")
   .isIn(["ASC", "DESC"])
   .withMessage("Sort type is not valid");
+
+const descriptionsFormat = body("descriptions")
+  .notEmpty()
+  .withMessage("Descriptions cannot be empty")
+  .isLength({ max: 255 })
+  .withMessage("Descriptions length is not valid");
+
+const dateFormat = body("date").notEmpty().withMessage("Date cannot be empty");
+
+const eventIdFormat = body("eventId")
+  .isLength({ min: 5 })
+  .withMessage("EventId is not valid");
+
+const categoryIdFormat = body("categoryId")
+  .isLength({ min: 5 })
+  .withMessage("CategoryId is not valid");
+
+const cityIdFormat = body("cityId")
+  .isLength({ min: 5 })
+  .withMessage("CityId is not valid");
 
 const rules = {
   authLogin: [
@@ -18,9 +45,13 @@ const rules = {
   ],
   getAllCategories: [queryFormat],
   getAllCities: [queryFormat],
+  getAllEventCategories: [queryFormat],
+  getAllEvents: [queryFormat],
   getAllUsers: [queryFormat],
   createCategory: [nameFormat],
   createCity: [nameFormat],
+  createEventCategory: [eventIdFormat, categoryIdFormat],
+  createEvent: [titleFormat, dateFormat, cityIdFormat, descriptionsFormat],
   createUser: [
     body("username")
       .notEmpty()
@@ -53,7 +84,6 @@ const validator = (req, res, next) => {
       message: "Validation Error",
       results: errors.array(),
     });
-    // return errorHandler(res, err);
   }
 };
 

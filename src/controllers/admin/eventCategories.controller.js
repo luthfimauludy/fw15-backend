@@ -16,18 +16,19 @@ exports.getAllEventCategories = async (req, res) => {
 };
 
 exports.getOneEventCategory = async (req, res) => {
-  const data = await eventCategoriesModel.findOne(req.params.id);
-  if (data) {
+  try {
+    const data = await eventCategoriesModel.findOne(req.params.id);
+    if (!data) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Detail event category",
       results: data,
     });
+  } catch (err) {
+    return errorHandler(res, err);
   }
-  return res.status(404).json({
-    success: false,
-    message: "Error: Event Category is not found",
-  });
 };
 
 exports.createEventCategory = async (req, res) => {
@@ -51,6 +52,9 @@ exports.updateEventCategory = async (req, res) => {
       req.params.id,
       data
     );
+    if (!eventCategory) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Update event category successfully",
