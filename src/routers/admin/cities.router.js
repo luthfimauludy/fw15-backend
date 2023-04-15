@@ -7,15 +7,15 @@ cityRouter.get("/", validate("getAllCities"), cityController.getAllCities);
 cityRouter.get("/:id", validate("idParams"), cityController.getOneCity);
 cityRouter.post(
   "/",
-  validate("createCity"),
   uploadMiddleware("picture"),
+  validate("createCity"),
   cityController.createCity
 );
 cityRouter.patch(
   "/:id",
   validate("idParams"),
-  validate("createCity"),
   uploadMiddleware("picture"),
+  validate("createCity"),
   cityController.updateCity
 );
 cityRouter.delete("/:id", validate("idParams"), cityController.deleteCity);
