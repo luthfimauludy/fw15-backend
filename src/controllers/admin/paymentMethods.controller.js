@@ -16,18 +16,19 @@ exports.getAllPaymentMethods = async (req, res) => {
 };
 
 exports.getOnePaymentMethod = async (req, res) => {
-  const data = await paymentMethodsModel.findOne(req.params.id);
-  if (data) {
+  try {
+    const data = await paymentMethodsModel.findOne(req.params.id);
+    if (!data) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Detail payment method",
       results: data,
     });
+  } catch (err) {
+    return errorHandler(res, err);
   }
-  return res.status(404).json({
-    success: false,
-    message: "Error: Payment method is not found",
-  });
 };
 
 exports.createPaymentMethod = async (req, res) => {
@@ -48,6 +49,9 @@ exports.updatePaymentMethod = async (req, res) => {
   try {
     const data = { ...req.body };
     const paymentMethod = await paymentMethodsModel.update(req.params.id, data);
+    if (!paymentMethod) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Update payment method successfully",

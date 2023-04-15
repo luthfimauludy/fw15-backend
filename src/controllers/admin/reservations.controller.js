@@ -16,18 +16,19 @@ exports.getAllReservations = async (req, res) => {
 };
 
 exports.getOneReservation = async (req, res) => {
-  const data = await reservationsModel.findOne(req.params.id);
-  if (data) {
+  try {
+    const data = await reservationsModel.findOne(req.params.id);
+    if (!data) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Detail reservation",
       results: data,
     });
+  } catch (err) {
+    return errorHandler(res, err);
   }
-  return res.status(404).json({
-    success: false,
-    message: "Error: Reservation is not found",
-  });
 };
 
 exports.createReservation = async (req, res) => {
@@ -48,6 +49,9 @@ exports.updateReservation = async (req, res) => {
   try {
     const data = { ...req.body };
     const reservation = await reservationsModel.update(req.params.id, data);
+    if (!reservation) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Update reservation successfully",

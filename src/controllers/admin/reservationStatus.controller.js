@@ -16,18 +16,19 @@ exports.getAllReservationStatus = async (req, res) => {
 };
 
 exports.getOneReservationStatus = async (req, res) => {
-  const data = await reservationStatusModel.findOne(req.params.id);
-  if (data) {
+  try {
+    const data = await reservationStatusModel.findOne(req.params.id);
+    if (!data) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Detail reservation status",
       results: data,
     });
+  } catch (err) {
+    return errorHandler(res, err);
   }
-  return res.status(404).json({
-    success: false,
-    message: "Error: Reservation status is not found",
-  });
 };
 
 exports.createReservationStatus = async (req, res) => {
@@ -51,6 +52,9 @@ exports.updateReservationStatus = async (req, res) => {
       req.params.id,
       data
     );
+    if (!reservationStatus) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Update reservation status successfully",

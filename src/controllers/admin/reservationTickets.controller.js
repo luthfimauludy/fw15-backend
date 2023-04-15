@@ -16,18 +16,19 @@ exports.getAllReservationTickets = async (req, res) => {
 };
 
 exports.getOneReservationTicket = async (req, res) => {
-  const data = await reservationTicketsModel.findOne(req.params.id);
-  if (data) {
+  try {
+    const data = await reservationTicketsModel.findOne(req.params.id);
+    if (!data) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Detail reservation ticket",
       results: data,
     });
+  } catch (err) {
+    return errorHandler(res, err);
   }
-  return res.status(404).json({
-    success: false,
-    message: "Error: Reservation ticket is not found",
-  });
 };
 
 exports.createReservationTicket = async (req, res) => {
@@ -51,6 +52,9 @@ exports.updateReservationTicket = async (req, res) => {
       req.params.id,
       data
     );
+    if (!reservationTicket) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Update reservation ticket successfully",

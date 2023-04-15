@@ -16,18 +16,19 @@ exports.getAllWishlists = async (req, res) => {
 };
 
 exports.getOneWishlist = async (req, res) => {
-  const data = await wishlistsModel.findOne(req.params.id);
-  if (data) {
+  try {
+    const data = await wishlistsModel.findOne(req.params.id);
+    if (!data) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Detail wishlist",
       results: data,
     });
+  } catch (err) {
+    return errorHandler(res, err);
   }
-  return res.status(404).json({
-    success: false,
-    message: "Error: Wishlist is not found",
-  });
 };
 
 exports.createWishlist = async (req, res) => {
@@ -48,6 +49,9 @@ exports.updateWishlist = async (req, res) => {
   try {
     const data = { ...req.body };
     const wishlist = await wishlistsModel.update(req.params.id, data);
+    if (!wishlist) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Update wishlist successfully",

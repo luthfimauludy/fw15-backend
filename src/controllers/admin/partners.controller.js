@@ -16,18 +16,19 @@ exports.getAllPartners = async (req, res) => {
 };
 
 exports.getOnePartner = async (req, res) => {
-  const data = await partnersModel.findOne(req.params.id);
-  if (data) {
+  try {
+    const data = await partnersModel.findOne(req.params.id);
+    if (!data) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Detail partner",
       results: data,
     });
+  } catch (err) {
+    return errorHandler(res, err);
   }
-  return res.status(404).json({
-    success: false,
-    message: "Error: Partner is not found",
-  });
 };
 
 exports.createPartner = async (req, res) => {
@@ -54,6 +55,9 @@ exports.updatePartner = async (req, res) => {
       data.picture = req.file.filename;
     }
     const partner = await partnersModel.update(req.params.id, data);
+    if (!partner) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Update partner successfully",

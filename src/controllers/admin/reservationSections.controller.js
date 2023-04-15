@@ -16,18 +16,19 @@ exports.getAllReservationSections = async (req, res) => {
 };
 
 exports.getOneReservationSection = async (req, res) => {
-  const data = await reservationSectionsModel.findOne(req.params.id);
-  if (data) {
+  try {
+    const data = await reservationSectionsModel.findOne(req.params.id);
+    if (!data) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Detail reservation section",
       results: data,
     });
+  } catch (err) {
+    return errorHandler(res, err);
   }
-  return res.status(404).json({
-    success: false,
-    message: "Error: Reservation section is not found",
-  });
 };
 
 exports.createReservationSection = async (req, res) => {
@@ -51,6 +52,9 @@ exports.updateReservationSection = async (req, res) => {
       req.params.id,
       data
     );
+    if (!reservationSection) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Update reservation section successfully",

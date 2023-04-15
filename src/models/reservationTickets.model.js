@@ -2,21 +2,21 @@ const db = require("../helpers/db.helper");
 
 const table = "reservationTickets";
 
-exports.findAll = async (page, limit, search, sort, sortBy) => {
+exports.findAll = async (page, limit, reservationId, sort, sortBy) => {
   page = parseInt(page) || 1;
   limit = parseInt(limit) || 5;
-  search = search || "";
+  // search = search || "";
   sort = sort || "id";
   sortBy = sortBy || "ASC";
 
   const offset = (page - 1) * limit;
   const query = `
   SELECT * FROM "${table}"
-  WHERE "reservationId" LIKE $3
+  WHERE "reservationId"=$3
   ORDER BY ${sort} ${sortBy}
   LIMIT $1 OFFSET $2
   `;
-  const values = [limit, offset, `%${search}%`];
+  const values = [limit, offset, reservationId];
   const { rows } = await db.query(query, values);
   return rows;
 };

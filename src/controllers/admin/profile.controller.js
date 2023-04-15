@@ -16,18 +16,19 @@ exports.getAllProfiles = async (req, res) => {
 };
 
 exports.getOneProfile = async (req, res) => {
-  const data = await profileModel.findOne(req.params.id);
-  if (data) {
+  try {
+    const data = await profileModel.findOne(req.params.id);
+    if (!data) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Detail profile",
       results: data,
     });
+  } catch (err) {
+    return errorHandler(res, err);
   }
-  return res.status(404).json({
-    success: false,
-    message: "Error: Profile is not found",
-  });
 };
 
 exports.createProfile = async (req, res) => {
@@ -54,6 +55,9 @@ exports.updateProfile = async (req, res) => {
       data.picture = req.file.filename;
     }
     const profile = await profileModel.update(req.params.id, data);
+    if (!profile) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Update profile successfully",
