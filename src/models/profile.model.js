@@ -2,12 +2,12 @@ const db = require("../helpers/db.helper");
 
 const table = "profile";
 
-exports.findAll = async (page, limit, search, sort, sortBy) => {
-  page = parseInt(page) || 1;
-  limit = parseInt(limit) || 5;
-  search = search || "";
-  sort = sort || "id";
-  sortBy = sortBy || "ASC";
+exports.findAll = async (qs) => {
+  page = parseInt(qs.page) || 1;
+  limit = parseInt(qs.limit) || 5;
+  search = qs.search || "";
+  sort = qs.sort || "id";
+  sortBy = qs.sortBy || "ASC";
 
   const offset = (page - 1) * limit;
   const query = `

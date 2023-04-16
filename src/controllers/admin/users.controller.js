@@ -76,6 +76,9 @@ exports.updateUser = async (req, res) => {
       password: hash,
     };
     const user = await usersModel.update(req.params.id, data);
+    if (!user) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Update user successfully",

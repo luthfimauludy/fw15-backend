@@ -9,10 +9,15 @@ const nameFormat = body("name")
 const emailFormat = body("email").isEmail().withMessage("Email is not valid");
 
 const passwordFormat = body("password")
+  .notEmpty()
+  .withMessage("Password cannot be empty")
   .isStrongPassword()
-  .withMessage("Password must be strong");
+  .withMessage(
+    "Password must be strong, at least 8 characters and must include capital letters, numbers and symbols"
+  );
 
 const queryFormat = query("sortBy")
+  .optional()
   .isIn(["ASC", "DESC"])
   .withMessage("Sort type is not valid");
 
