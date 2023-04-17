@@ -126,6 +126,13 @@ const rules = {
       .isInt({ min: 1 })
       .withMessage("Id need to be more than 0"),
   ],
+  resetPassword: [
+    body("confirmPassword")
+      .custom((value, { req }) => {
+        return value === req.body.password;
+      })
+      .withMessage("Confirm password does not match"),
+  ],
 };
 
 const validator = (req, res, next) => {
