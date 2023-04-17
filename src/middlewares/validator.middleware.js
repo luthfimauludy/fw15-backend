@@ -86,7 +86,7 @@ const rules = {
       .withMessage("Nasionality cannot be empty")
       .isLength({ min: 2 })
       .withMessage("Nasionality length is not valid"),
-    body("birthDate").notEmpty().withMessage("Date cannot be empty"),
+    body("birthDate").notEmpty().withMessage("Birth date cannot be empty"),
   ],
   createReservation: [
     eventIdFormat,
@@ -105,7 +105,9 @@ const rules = {
     body("reservationId")
       .isLength({ min: 5 })
       .withMessage("ReservationId is not valid"),
-    body("sectionId").isLength({ min: 5 }).withMessage("CityId is not valid"),
+    body("sectionId")
+      .isLength({ min: 5 })
+      .withMessage("SectionId is not valid"),
     body("quantity").notEmpty().withMessage("Quantity cannot be empty"),
   ],
   createWishlist: [eventIdFormat, userIdFormat],
