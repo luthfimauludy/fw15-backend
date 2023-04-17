@@ -127,6 +127,10 @@ const rules = {
       .withMessage("Id need to be more than 0"),
   ],
   resetPassword: [
+    body("code")
+      .isLength({ min: 6 })
+      .withMessage("Code length must be at least 6 digits"),
+    emailFormat,
     body("confirmPassword")
       .custom((value, { req }) => {
         return value === req.body.password;
