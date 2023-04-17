@@ -32,7 +32,7 @@ const errorHandler = (res, err) => {
   if (err === undefined) {
     return res.status(404).json({
       success: false,
-      message: "Error: Not found!",
+      message: "Error: User not found!",
     });
   }
   if (err?.message?.includes("name_empty_field")) {
