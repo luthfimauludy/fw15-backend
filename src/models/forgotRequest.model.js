@@ -48,6 +48,15 @@ exports.findOneByCode = async (code) => {
   return rows[0];
 };
 
+exports.findOneByCodeAndEmail = async (code, email) => {
+  const query = `
+  SELECT * FROM "${table}" WHERE "code"=$1 AND "email"=$2
+  `;
+  const values = [code, email];
+  const { rows } = await db.query(query, values);
+  return rows[0];
+};
+
 exports.insert = async (data) => {
   const query = `
   INSERT INTO "${table}" ("email", "code") 
