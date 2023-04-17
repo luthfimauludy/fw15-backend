@@ -41,8 +41,8 @@ exports.findOneByName = async (fullName) => {
 
 exports.insert = async (data) => {
   const query = `
-  INSERT INTO "${table}" ("picture", "fullName", "phoneNumber", "gender", "profession", "nasionality", "birthDate") 
-  VALUES ($1, $2, $3, $4, $5, $6, $7)
+  INSERT INTO "${table}" ("picture", "fullName", "phoneNumber", "gender", "profession", "nasionality", "birthDate", "userId") 
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
   RETURNING *;
   `;
   const values = [
@@ -53,6 +53,7 @@ exports.insert = async (data) => {
     data.profession,
     data.nasionality,
     data.birthDate,
+    data.userId,
   ];
   const { rows } = await db.query(query, values);
   return rows[0];
@@ -68,7 +69,8 @@ exports.update = async (id, data) => {
   "gender"=COALESCE(NULLIF($5, FALSE), "gender"),
   "profession"=COALESCE(NULLIF($6, ''), "profession"),
   "nasionality"=COALESCE(NULLIF($7, ''), "nasionality"),
-  "birthDate"=COALESCE(NULLIF($8::DATE, NULL), "birthDate")
+  "birthDate"=COALESCE(NULLIF($8::DATE, NULL), "birthDate"),
+  "userId"=COALESCE(NULLIF($9::INTEGER, NULL), "userId")
   WHERE "id"=$1
   RETURNING *;
   `;
@@ -81,6 +83,7 @@ exports.update = async (id, data) => {
     data.profession,
     data.nasionality,
     data.birthDate,
+    data.userId,
   ];
   const { rows } = await db.query(query, values);
   return rows[0];
