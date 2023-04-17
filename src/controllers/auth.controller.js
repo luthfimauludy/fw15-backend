@@ -97,6 +97,7 @@ exports.resetPassword = async (req, res) => {
     if (!user) {
       return errorHandler(res, undefined);
     }
+    await forgotRequestModel.destroy(find.id);
     return res.json({
       success: true,
       message: "Reset password success!",
