@@ -61,7 +61,7 @@ exports.forgotPassword = async (req, res) => {
     const { email } = req.body;
     const user = await userModel.findOneByEmail(email);
     if (!user) {
-      throw Error("no_user");
+      return errorHandler(res, undefined);
     }
     const randomNumber = Math.random();
     const rounded = Math.round(randomNumber * 100000);
