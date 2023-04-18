@@ -10,6 +10,7 @@ router.get("/", (req, res) => {
 
 router.use("/auth", require("./auth.router"));
 router.use("/admin", authMiddleware, require("./admin/admin.router"));
+router.use("/profile", authMiddleware, require("./profile.router"));
 
 router.use("*", (req, res) => {
   return res.status(404).json({
