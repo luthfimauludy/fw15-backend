@@ -5,12 +5,12 @@ const validate = require("../middlewares/validator.middleware");
 authRouter.post("/login", validate("authLogin"), authController.login);
 authRouter.post("/register", validate("authRegister"), authController.register);
 authRouter.post(
-  "/forgotPassword",
+  "/forgot-password",
   validate("authForgotPassword"),
   authController.forgotPassword
 );
 authRouter.post(
-  "/resetPassword",
+  "/reset-password",
   validate("resetPassword"),
   authController.resetPassword
 );
