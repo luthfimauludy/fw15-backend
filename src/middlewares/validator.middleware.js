@@ -6,7 +6,17 @@ const nameFormat = body("name")
   .isLength({ min: 3, max: 255 })
   .withMessage("Name length is not valid");
 
-const emailFormat = body("email").isEmail().withMessage("Email is not valid");
+const fullNameFormat = body("fullName")
+  .notEmpty()
+  .withMessage("Full name cannot be empty")
+  .isLength({ min: 3, max: 80 })
+  .withMessage("Full name length must be at least 3 characters");
+
+const emailFormat = body("email")
+  .notEmpty()
+  .withMessage("Email cannot be empty")
+  .isEmail()
+  .withMessage("Email is not valid");
 
 const passwordFormat = body("password")
   .notEmpty()
@@ -15,6 +25,12 @@ const passwordFormat = body("password")
   .withMessage(
     "Password must be strong, at least 8 characters and must include capital letters, numbers and symbols"
   );
+
+const confirmPasswordFormat = body("confirmPassword")
+  .custom((value, { req }) => {
+    return value === req.body.password;
+  })
+  .withMessage("Confirm password does not match");
 
 const queryFormat = query("sortBy")
   .optional()
@@ -31,6 +47,13 @@ const userIdFormat = body("userId")
 
 const rules = {
   authLogin: [emailFormat, passwordFormat],
+  authRegister: [
+    fullNameFormat,
+    emailFormat,
+    passwordFormat,
+    confirmPasswordFormat,
+  ],
+  authForgotPassword: [emailFormat],
   getAllCategories: [queryFormat],
   getAllCities: [queryFormat],
   getAllEventCategories: [queryFormat],
@@ -65,11 +88,7 @@ const rules = {
   createPartner: [nameFormat],
   createPaymentMethod: [nameFormat],
   createProfile: [
-    body("fullName")
-      .notEmpty()
-      .withMessage("Full name cannot be empty")
-      .isLength({ min: 3, max: 80 })
-      .withMessage("Full name length is not valid"),
+    fullNameFormat,
     body("phoneNumber")
       .notEmpty()
       .withMessage("Phone Number cannot be empty")
@@ -133,11 +152,7 @@ const rules = {
       .isLength({ min: 6 })
       .withMessage("Code length must be at least 6 digits"),
     emailFormat,
-    body("confirmPassword")
-      .custom((value, { req }) => {
-        return value === req.body.password;
-      })
-      .withMessage("Confirm password does not match"),
+    confirmPasswordFormat,
   ],
 };
 
