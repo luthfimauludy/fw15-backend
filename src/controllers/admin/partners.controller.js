@@ -1,5 +1,6 @@
 const partnersModel = require("../../models/partners.model");
 const errorHandler = require("../../helpers/errorHandler.helper");
+const fileRemover = require("../../helpers/fileRemover.helper");
 
 exports.getAllPartners = async (req, res) => {
   try {
@@ -50,8 +51,12 @@ exports.createPartner = async (req, res) => {
 
 exports.updatePartner = async (req, res) => {
   try {
+    const img = await partnersModel.findOne(req.params.id);
     const data = { ...req.body };
     if (req.file) {
+      if (img.picture) {
+        fileRemover({ filename: img.picture });
+      }
       data.picture = req.file.filename;
     }
     const partner = await partnersModel.update(req.params.id, data);

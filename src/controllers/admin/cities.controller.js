@@ -1,5 +1,6 @@
 const citiesModel = require("../../models/cities.model");
 const errorHandler = require("../../helpers/errorHandler.helper");
+const fileRemover = require("../../helpers/fileRemover.helper");
 
 exports.getAllCities = async (req, res) => {
   try {
@@ -50,8 +51,12 @@ exports.createCity = async (req, res) => {
 
 exports.updateCity = async (req, res) => {
   try {
+    const img = await citiesModel.findOne(req.params.id);
     const data = { ...req.body };
     if (req.file) {
+      if (img.picture) {
+        fileRemover({ filename: img.picture });
+      }
       data.picture = req.file.filename;
     }
     const city = await citiesModel.update(req.params.id, data);
