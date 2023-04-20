@@ -20,7 +20,7 @@ reservationSectionRouter.post(
 reservationSectionRouter.patch(
   "/:id",
   validate("idParams"),
-  validate("createReservationSection"),
+  validate("updateReservationSection"),
   reservationSectionController.updateReservationSection
 );
 reservationSectionRouter.delete(

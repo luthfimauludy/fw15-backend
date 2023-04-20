@@ -23,7 +23,7 @@ partnerRouter.patch(
   "/:id",
   validate("idParams"),
   uploadMiddleware("picture"),
-  validate("createPartner"),
+  validate("updatePartner"),
   partnerController.updatePartner
 );
 partnerRouter.delete(

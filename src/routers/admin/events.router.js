@@ -15,7 +15,7 @@ eventRouter.patch(
   "/:id",
   validate("idParams"),
   uploadMiddleware("picture"),
-  validate("createEvent"),
+  validate("updateEvent"),
   eventController.updateEvent
 );
 eventRouter.delete("/:id", validate("idParams"), eventController.deleteEvent);

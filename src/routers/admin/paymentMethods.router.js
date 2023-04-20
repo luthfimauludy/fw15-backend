@@ -20,7 +20,7 @@ paymentMethodRouter.post(
 paymentMethodRouter.patch(
   "/:id",
   validate("idParams"),
-  validate("createPaymentMethod"),
+  validate("updatePaymentMethod"),
   paymentMethodController.updatePaymentMethod
 );
 paymentMethodRouter.delete(

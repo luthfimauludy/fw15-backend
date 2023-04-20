@@ -8,7 +8,7 @@ userRouter.post("/", validate("createUser"), userController.createUser);
 userRouter.patch(
   "/:id",
   validate("idParams"),
-  validate("createUser"),
+  validate("updateUser"),
   userController.updateUser
 );
 userRouter.delete("/:id", validate("idParams"), userController.deleteUser);

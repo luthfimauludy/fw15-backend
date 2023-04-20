@@ -20,7 +20,7 @@ categoryRouter.post(
 categoryRouter.patch(
   "/:id",
   validate("idParams"),
-  validate("createCategory"),
+  validate("updateCategory"),
   categoryController.updateCategory
 );
 categoryRouter.delete(

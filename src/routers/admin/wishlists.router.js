@@ -20,7 +20,7 @@ wishlistRouter.post(
 wishlistRouter.patch(
   "/:id",
   validate("idParams"),
-  validate("createWishlist"),
+  validate("updateWishlist"),
   wishlistController.updateWishlist
 );
 wishlistRouter.delete(

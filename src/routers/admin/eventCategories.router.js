@@ -22,7 +22,7 @@ eventCategoryRouter.post(
 eventCategoryRouter.patch(
   "/:id",
   validate("idParams"),
-  validate("createEventCategory"),
+  validate("updateEventCategory"),
   eventCategoryController.updateEventCategory
 );
 eventCategoryRouter.delete(

@@ -23,7 +23,7 @@ profileRouter.patch(
   "/:id",
   validate("idParams"),
   uploadMiddleware("picture"),
-  validate("createProfile"),
+  validate("updateProfile"),
   profileController.updateProfile
 );
 profileRouter.delete(

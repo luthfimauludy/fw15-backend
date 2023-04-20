@@ -15,7 +15,7 @@ cityRouter.patch(
   "/:id",
   validate("idParams"),
   uploadMiddleware("picture"),
-  validate("createCity"),
+  validate("updateCity"),
   cityController.updateCity
 );
 cityRouter.delete("/:id", validate("idParams"), cityController.deleteCity);
