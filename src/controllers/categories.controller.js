@@ -3,8 +3,8 @@ const errorHandler = require("../helpers/errorHandler.helper");
 
 exports.getAllCategories = async (req, res) => {
   try {
-    const { id } = req.user;
-    const category = await categoriesModel.findAll(id);
+    const data = { ...req.query };
+    const category = await categoriesModel.findAll(data);
     if (!category) {
       return errorHandler(res, undefined);
     }
