@@ -89,7 +89,7 @@ exports.update = async (id, data) => {
   "picture"=COALESCE(NULLIF($2, ''), "picture"),
   "fullName"=COALESCE(NULLIF($3, ''), "fullName"),
   "phoneNumber"=COALESCE(NULLIF($4, ''), "phoneNumber"),
-  "gender"=COALESCE(NULLIF($5, FALSE), "gender"),
+  "gender"=COALESCE(NULLIF($5::BOOLEAN, NULL), "gender"),
   "profession"=COALESCE(NULLIF($6, ''), "profession"),
   "nasionality"=COALESCE(NULLIF($7, ''), "nasionality"),
   "birthDate"=COALESCE(NULLIF($8::DATE, NULL), "birthDate"),
@@ -112,7 +112,7 @@ exports.update = async (id, data) => {
   return rows[0];
 };
 
-exports.updateByEmail = async (userId, data) => {
+exports.updateByUserId = async (userId, data) => {
   const query = `
   UPDATE "${table}" 
   SET 
