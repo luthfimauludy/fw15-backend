@@ -3,14 +3,14 @@ const errorHandler = require("../helpers/errorHandler.helper");
 
 exports.getAllCities = async (req, res) => {
   try {
-    const { id } = req.user;
-    const city = await citiesModel.findAll(id);
+    const data = { ...req.query };
+    const city = await citiesModel.findAll(data);
     if (!city) {
       return errorHandler(res, undefined);
     }
     return res.json({
       success: true,
-      message: "Cities",
+      message: "List of all cities",
       results: city,
     });
   } catch (err) {
