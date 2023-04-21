@@ -87,6 +87,13 @@ const rules = {
     confirmPasswordFormat,
   ],
   authForgotPassword: [emailFormat],
+  authResetPassword: [
+    body("code")
+      .isLength({ min: 6 })
+      .withMessage("Code length must be at least 6 digits"),
+    emailFormat,
+    confirmPasswordFormat,
+  ],
   getAllCategories: [queryFormat],
   createCategory: [nameFormat],
   updateCategory: [nameFormat],
@@ -231,22 +238,11 @@ const rules = {
   getAllReservationSections: [queryFormat],
   createReservationSection: [
     nameFormat,
-    body("price")
-      .notEmpty()
-      .withMessage("Price cannot be empty")
-      .toInt()
-      .isNumeric()
-      .withMessage("Must be a number"),
+    body("price").notEmpty().withMessage("Price cannot be empty"),
   ],
   updateReservationSection: [
     nameUpdateFormat,
-    body("price")
-      .optional()
-      .notEmpty()
-      .withMessage("Price cannot be empty")
-      .toInt()
-      .isNumeric()
-      .withMessage("Must be a number"),
+    body("price").optional().notEmpty().withMessage("Price cannot be empty"),
   ],
   getAllReservationStatus: [queryFormat],
   createReservationStatus: [nameFormat],
@@ -303,13 +299,6 @@ const rules = {
       .withMessage("Id is not valid")
       .isInt({ min: 1 })
       .withMessage("Id need to be more than 0"),
-  ],
-  resetPassword: [
-    body("code")
-      .isLength({ min: 6 })
-      .withMessage("Code length must be at least 6 digits"),
-    emailFormat,
-    confirmPasswordFormat,
   ],
 };
 
