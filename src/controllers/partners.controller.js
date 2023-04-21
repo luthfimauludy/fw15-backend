@@ -3,14 +3,14 @@ const errorHandler = require("../helpers/errorHandler.helper");
 
 exports.getAllPartners = async (req, res) => {
   try {
-    const { id } = req.user;
-    const partner = await partnersModel.findAll(id);
+    const data = { ...req.query };
+    const partner = await partnersModel.findAll(data);
     if (!partner) {
       return errorHandler(res, undefined);
     }
     return res.json({
       success: true,
-      message: "Partners",
+      message: "List of all partners",
       results: partner,
     });
   } catch (err) {
