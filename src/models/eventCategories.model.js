@@ -30,6 +30,28 @@ exports.findOne = async (id) => {
   return rows[0];
 };
 
+exports.findOneByEventId = async (eventId) => {
+  const query = `
+  SELECT 
+  "events"."id",
+  "events"."title",
+  "cities"."name" as "location",
+  "categories"."name" as "category",
+  "events"."date",
+  "events"."descriptions",
+  "events"."createdAt",
+  "events"."updatedAt"
+  FROM "${table}"
+  JOIN "events" ON "events"."id" = "${table}"."eventId"
+  JOIN "categories" ON "categories"."id" = "${table}"."categoryId"
+  JOIN "cities" ON "cities"."id" = "events"."cityId"
+  WHERE "${table}"."eventId"=$1
+  `;
+  const values = [eventId];
+  const { rows } = await db.query(query, values);
+  return rows[0];
+};
+
 exports.insert = async (data) => {
   const query = `
   INSERT INTO "${table}" ("eventId", "categoryId") VALUES ($1, $2)
