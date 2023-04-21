@@ -32,7 +32,21 @@ exports.findOne = async (id) => {
 
 exports.findOneByUserId = async (userId) => {
   const query = `
-  SELECT * FROM "${table}" WHERE "userId"=$1
+  SELECT 
+  "users"."id",
+  "${table}"."fullName",
+  "users"."username",
+  "users"."email",
+  "${table}"."phoneNumber",
+  "${table}"."gender",
+  "${table}"."profession",
+  "${table}"."nasionality",
+  "${table}"."birthDate",
+  "${table}"."createdAt",
+  "${table}"."updatedAt"
+  FROM "${table}"
+  JOIN "users" ON "users"."id" = "${table}"."userId"
+  WHERE "${table}"."userId"=$1
   `;
   const values = [userId];
   const { rows } = await db.query(query, values);
