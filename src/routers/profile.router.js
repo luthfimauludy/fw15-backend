@@ -1,12 +1,17 @@
 const profileRouter = require("express").Router();
 const profileController = require("../controllers/profile.controller");
-// const validate = require("../middlewares/validator.middleware");
 const uploadMiddleware = require("../middlewares/upload.middleware");
+const validate = require("../middlewares/validator.middleware");
 
-profileRouter.get("/", profileController.getProfile);
+profileRouter.get(
+  "/",
+  validate("getAllProfiles"),
+  profileController.getProfile
+);
 profileRouter.patch(
   "/",
   uploadMiddleware("picture"),
+  validate("updateProfile"),
   profileController.updateProfile
 );
 
