@@ -119,7 +119,7 @@ exports.updateByUserId = async (userId, data) => {
   "picture"=COALESCE(NULLIF($2, ''), "picture"),
   "fullName"=COALESCE(NULLIF($3, ''), "fullName"),
   "phoneNumber"=COALESCE(NULLIF($4, ''), "phoneNumber"),
-  "gender"=COALESCE(NULLIF($5, FALSE), "gender"),
+  "gender"=COALESCE(NULLIF($5::BOOLEAN, NULL), "gender"),
   "profession"=COALESCE(NULLIF($6, ''), "profession"),
   "nasionality"=COALESCE(NULLIF($7, ''), "nasionality"),
   "birthDate"=COALESCE(NULLIF($8::DATE, NULL), "birthDate")
