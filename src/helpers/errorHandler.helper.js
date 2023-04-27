@@ -65,6 +65,12 @@ const errorHandler = (res, err) => {
       message: "Error: Wrong email or password!",
     });
   }
+  if (err?.message?.includes("wrong_password")) {
+    return res.status(401).json({
+      success: false,
+      message: "Error: Wrong password!",
+    });
+  }
   if (err?.message?.includes("unauthorized")) {
     return res.status(401).json({
       success: false,
