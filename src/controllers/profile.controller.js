@@ -11,7 +11,7 @@ exports.getProfile = async (req, res) => {
     }
     return res.json({
       success: true,
-      message: "Profile",
+      message: "Detail profile",
       results: profile,
     });
   } catch (err) {
@@ -30,7 +30,7 @@ exports.updateProfile = async (req, res) => {
       }
       data.picture = req.file.filename;
     }
-    const profile = await profileModel.updateByEmail(id, data);
+    const profile = await profileModel.updateByUserId(id, data);
     if (!profile) {
       return errorHandler(res, undefined);
     }
