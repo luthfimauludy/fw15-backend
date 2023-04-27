@@ -195,7 +195,9 @@ const rules = {
       .isNumeric()
       .withMessage("Must be a number")
       .isLength({ min: 10, max: 12 })
-      .withMessage("Phone Number length is not valid, at least 10 characters"),
+      .withMessage(
+        "Phone Number length is not valid, at least 10 characters and max 12 characters"
+      ),
     body("gender").optional().notEmpty().withMessage("Gender cannot be empty"),
     body("profession")
       .optional()
