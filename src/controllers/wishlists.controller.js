@@ -5,7 +5,7 @@ const errorHandler = require("../helpers/errorHandler.helper");
 exports.getWishlist = async (req, res) => {
   try {
     const { id } = req.user;
-    const wishlist = await wishlistsModel.findOneByUserId(id);
+    const wishlist = await wishlistsModel.findAllByUserId(id);
     if (!wishlist) {
       return errorHandler(res, undefined);
     }
