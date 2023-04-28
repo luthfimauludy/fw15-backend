@@ -32,8 +32,8 @@ exports.findOne = async (id) => {
 
 exports.insert = async (data) => {
   const query = `
-  INSERT INTO "${table}" ("picture", "title", "date", "cityId", "descriptions") 
-  VALUES ($1, $2, $3, $4, $5)
+  INSERT INTO "${table}" ("picture", "title", "date", "cityId", "descriptions", "createdBy") 
+  VALUES ($1, $2, $3, $4, $5, $6)
   RETURNING *;
   `;
   const values = [
@@ -42,6 +42,7 @@ exports.insert = async (data) => {
     data.date,
     data.cityId,
     data.descriptions,
+    data.createdBy,
   ];
   const { rows } = await db.query(query, values);
   return rows[0];
@@ -55,7 +56,8 @@ exports.update = async (id, data) => {
   "title"=COALESCE(NULLIF($3, ''), "title"),
   "date"=COALESCE(NULLIF($4::DATE, NULL), "date"),
   "cityId"=COALESCE(NULLIF($5::INTEGER, NULL), "cityId"),
-  "descriptions"=COALESCE(NULLIF($6, ''), "descriptions")
+  "descriptions"=COALESCE(NULLIF($6, ''), "descriptions"),
+  "createdBy"=COALESCE(NULLIF($7::INTEGER, NULL), "createdBy")
   WHERE "id"=$1
   RETURNING *;
   `;
