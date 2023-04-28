@@ -158,9 +158,8 @@ const rules = {
     body("phoneNumber")
       .notEmpty()
       .withMessage("Phone Number cannot be empty")
-      .toInt()
-      .isNumeric()
-      .withMessage("Must be a number")
+      .isMobilePhone()
+      .withMessage("Must be a phone number format")
       .isLength({ min: 10, max: 12 })
       .withMessage("Phone Number length is not valid, at least 10 characters"),
     body("gender").notEmpty().withMessage("Gender cannot be empty"),
@@ -191,9 +190,8 @@ const rules = {
       .optional()
       .notEmpty()
       .withMessage("Phone Number cannot be empty")
-      .toInt()
-      .isNumeric()
-      .withMessage("Must be a number")
+      .isMobilePhone()
+      .withMessage("Must be a phone number format")
       .isLength({ min: 10, max: 12 })
       .withMessage(
         "Phone Number length is not valid, at least 10 characters and max 12 characters"
