@@ -5,18 +5,18 @@ const table = "reservationTickets";
 exports.findAll = async (qs) => {
   page = parseInt(qs.page) || 1;
   limit = parseInt(qs.limit) || 5;
-  // search = qs.search || "";
+  search = qs.search || "";
   sort = qs.sort || "id";
   sortBy = qs.sortBy || "ASC";
 
   const offset = (page - 1) * limit;
   const query = `
   SELECT * FROM "${table}"
-  WHERE "reservationId"=$3
+  WHERE "reservationId"::TEXT LIKE $3
   ORDER BY ${sort} ${sortBy}
   LIMIT $1 OFFSET $2
   `;
-  const values = [limit, offset, reservationId];
+  const values = [limit, offset, `%${search}%`];
   const { rows } = await db.query(query, values);
   return rows;
 };
