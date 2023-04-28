@@ -30,21 +30,25 @@ exports.findOne = async (id) => {
   return rows[0];
 };
 
-exports.findOneByUserId = async (userId) => {
+exports.findAllByUserId = async (userId) => {
   const query = `
   SELECT 
   "events"."id",
-  "users"."id",
+  "users"."id" as "userId",
+  "events"."title",
+  "cities"."name" as "location",
+  "events"."date",
   "${table}"."createdAt",
   "${table}"."updatedAt"
   FROM "${table}" 
   JOIN "events" ON "events"."id" = "${table}"."eventId"
   JOIN "users" ON "users"."id" = "${table}"."userId"
+  JOIN "cities" ON "cities"."id" = "events"."cityId"
   WHERE "${table}"."userId"=$1
   `;
   const values = [userId];
   const { rows } = await db.query(query, values);
-  return rows[0];
+  return rows;
 };
 
 exports.insert = async (data) => {
