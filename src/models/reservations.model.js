@@ -5,18 +5,18 @@ const table = "reservations";
 exports.findAll = async (qs) => {
   page = parseInt(qs.page) || 1;
   limit = parseInt(qs.limit) || 5;
-  // search = qs.search || "";
+  search = qs.search || "";
   sort = qs.sort || "id";
   sortBy = qs.sortBy || "ASC";
 
   const offset = (page - 1) * limit;
   const query = `
   SELECT * FROM "${table}"
-  WHERE "eventId"=$3
+  WHERE "id"::TEXT LIKE $3
   ORDER BY ${sort} ${sortBy}
   LIMIT $1 OFFSET $2
   `;
-  const values = [limit, offset, eventId];
+  const values = [limit, offset, `%${search}%`];
   const { rows } = await db.query(query, values);
   return rows;
 };
@@ -26,6 +26,27 @@ exports.findOne = async (id) => {
   SELECT * FROM "${table}" WHERE id=$1
   `;
   const values = [id];
+  const { rows } = await db.query(query, values);
+  return rows[0];
+};
+
+exports.findOneByUserId = async (userId) => {
+  const query = `
+  SELECT 
+  "events"."id",
+  "users"."id",
+  "reservationStatus"."id,
+  "paymentMethods"."id",
+  "${table}"."createdAt",
+  "${table}"."updatedAt"
+  FROM "${table}" 
+  JOIN "events" ON "events"."id" = "${table}"."eventId"
+  JOIN "users" ON "users"."id" = "${table}"."userId"
+  JOIN "reservationStatus" ON "reservationStatus"."id" = "${table}"."statusId"
+  JOIN "paymentMethods" ON "paymentMethods"."id" = "${table}"."paymentMethodId"
+  WHERE "${table}"."userId"=$1
+  `;
+  const values = [userId];
   const { rows } = await db.query(query, values);
   return rows[0];
 };
