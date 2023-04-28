@@ -68,6 +68,7 @@ exports.update = async (id, data) => {
     data.date,
     data.cityId,
     data.descriptions,
+    data.createdBy,
   ];
   const { rows } = await db.query(query, values);
   return rows[0];
