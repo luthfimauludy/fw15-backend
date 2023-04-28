@@ -114,6 +114,7 @@ const rules = {
       .withMessage("Date format is not valid, use MM-DD-YYYY"),
     body("cityId").notEmpty().withMessage("CityId cannot be empty"),
     body("descriptions").notEmpty().withMessage("Descriptions cannot be empty"),
+    body("createdBy").notEmpty().withMessage("CreatedBy cannot be empty"),
   ],
   updateEvent: [
     body("title")
@@ -133,6 +134,10 @@ const rules = {
       .optional()
       .notEmpty()
       .withMessage("Descriptions cannot be empty"),
+    body("createdBy")
+      .optional()
+      .notEmpty()
+      .withMessage("CreatedBy cannot be empty"),
   ],
   getAllEventCategories: [queryFormat],
   createEventCategory: [
