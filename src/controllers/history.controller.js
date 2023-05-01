@@ -1,4 +1,5 @@
 const reservationsModel = require("../models/reservations.model");
+const errorHandler = require("../helpers/errorHandler.helper");
 
 exports.getHistory = async (req, res) => {
   try {
