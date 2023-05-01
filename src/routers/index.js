@@ -18,6 +18,7 @@ router.use(
 );
 router.use("/cities", authMiddleware, require("./cities.router"));
 router.use("/events", authMiddleware, require("./events.router"));
+router.use("/history", authMiddleware, require("./history.router"));
 router.use("/partners", authMiddleware, require("./partners.router"));
 router.use("/payments", authMiddleware, require("./payments.router"));
 router.use("/profile", authMiddleware, require("./profile.router"));
