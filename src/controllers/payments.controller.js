@@ -1,12 +1,20 @@
-const reservationTicketsModel = require("../models/reservationTickets.model");
-const paymentMethodsModel = require("../models/paymentMethods.model");
+const reservationsModel = require("../models/reservations.model");
 const errorHandler = require("../helpers/errorHandler.helper");
 
 exports.createPayment = async (req, res) => {
   try {
+    const { id } = req.user;
     const { reservationId, paymentMethodId } = req.body;
-    const payment = await reservationTicketsModel.insert(reservationId);
-    await paymentMethodsModel.insert(paymentMethodId);
+    const data = {
+      ...req.body,
+      userId: id,
+      reservationId,
+      paymentMethodId,
+    };
+    const payment = await reservationsModel.updateByUserId(id, data);
+    if (!payment) {
+      return errorHandler(res, undefined);
+    }
     return res.json({
       success: true,
       message: "Create payment success!",
