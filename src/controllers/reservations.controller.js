@@ -13,6 +13,7 @@ exports.createReservation = async (req, res) => {
     };
     const reservation = await reservationsModel.insert(reservationData);
     const reservationTicketData = {
+      reservationId: reservation.id,
       sectionId,
       quantity,
     };
