@@ -30,7 +30,7 @@ exports.findOne = async (id) => {
   return rows[0];
 };
 
-exports.findOneByUserId = async (userId) => {
+exports.findAllByUserId = async (userId) => {
   const query = `
   SELECT 
   "events"."id" as "eventId",
