@@ -33,10 +33,10 @@ exports.findOne = async (id) => {
 exports.findOneByUserId = async (userId) => {
   const query = `
   SELECT 
-  "events"."id",
-  "users"."id",
-  "reservationStatus"."id,
-  "paymentMethods"."id",
+  "events"."id" as "eventId",
+  "users"."id" as "userId",
+  "reservationStatus"."id as "statusId",
+  "paymentMethods"."id" as "paymentMethodId",
   "${table}"."createdAt",
   "${table}"."updatedAt"
   FROM "${table}" 
@@ -85,6 +85,20 @@ exports.update = async (id, data) => {
     data.statusId,
     data.paymentMethodId,
   ];
+  const { rows } = await db.query(query, values);
+  return rows[0];
+};
+
+exports.updateByUserId = async (userId, data) => {
+  const query = `
+  UPDATE "${table}" 
+  SET 
+  "statusId"=COALESCE(NULLIF($2::INTEGER, NULL), "statusId"),
+  "paymentMethodId"=COALESCE(NULLIF($3::INTEGER, NULL), "paymentMethodId")
+  WHERE "userId"=$1
+  RETURNING *;
+  `;
+  const values = [userId, data.statusId, data.paymentMethodId];
   const { rows } = await db.query(query, values);
   return rows[0];
 };
