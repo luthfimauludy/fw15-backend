@@ -35,8 +35,15 @@ exports.findAllByUserId = async (userId) => {
   SELECT 
   "events"."id" as "eventId",
   "users"."id" as "userId",
+  "events"."title",
+  "events"."date",
+  "events"."cityId",
+  "events"."descriptions",
+  "events"."createdBy",
   "reservationStatus"."id" as "statusId",
+  "reservationStatus"."name" as "statusName",
   "paymentMethods"."id" as "paymentMethodId",
+  "paymentMethods"."name" as "paymentMethodName",
   "${table}"."createdAt",
   "${table}"."updatedAt"
   FROM "${table}" 
