@@ -92,6 +92,7 @@ const rules = {
       .isLength({ min: 6 })
       .withMessage("Code length must be at least 6 digits"),
     emailFormat,
+    passwordFormat,
     confirmPasswordFormat,
   ],
   getAllCategories: [queryFormat],
