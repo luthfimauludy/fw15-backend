@@ -57,13 +57,14 @@ exports.findOneByUserId = async (userId) => {
   SELECT 
   "${table}"."title",
   "${table}"."date",
-  "${table}"."cityId",
+  "cities"."cityId",
   "${table}"."descriptions",
   "${table}"."createdAt",
-  "${table}"."updatedAt"
+  "${table}"."updatedAt",
   "${table}"."createdBy"
   FROM "${table}"
   JOIN "users" ON "users"."id" = "${table}"."userId"
+  JOIN "cities" ON "cities"."id" = "${table}"."cityId"
   WHERE "${table}"."userId"=$1
   `;
   const values = [userId];
