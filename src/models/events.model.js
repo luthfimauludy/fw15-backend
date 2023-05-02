@@ -55,10 +55,10 @@ exports.findOne = async (id) => {
 exports.findOneByUserId = async (userId) => {
   const query = `
   SELECT 
-  "users"."id",
+  "users"."id" as "userId",
   "${table}"."title",
   "${table}"."date",
-  "cities"."id" as "cityId",
+  "${table}"."cityId",
   "cities"."name" as "location",
   "${table}"."descriptions",
   "${table}"."createdAt",
