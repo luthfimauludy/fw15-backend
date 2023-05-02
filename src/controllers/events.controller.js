@@ -63,7 +63,7 @@ exports.updateManageEvent = async (req, res) => {
       }
       data.picture = req.file.filename;
     }
-    const event = await eventsModel.findOneById(req.params.id, data);
+    const event = await eventsModel.update(req.params.id, data);
     if (!event) {
       return errorHandler(res, undefined);
     }
