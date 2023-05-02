@@ -55,6 +55,7 @@ exports.findOne = async (id) => {
 exports.findOneByUserId = async (userId) => {
   const query = `
   SELECT 
+  "users"."id",
   "${table}"."title",
   "${table}"."date",
   "cities"."id" as "cityId",
