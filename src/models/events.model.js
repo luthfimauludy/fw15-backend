@@ -52,7 +52,7 @@ exports.findOne = async (id) => {
   return rows[0];
 };
 
-exports.findOneByUserId = async (userId) => {
+exports.findOneById = async (id) => {
   const query = `
   SELECT 
   "${table}"."title",
@@ -65,9 +65,9 @@ exports.findOneByUserId = async (userId) => {
   "${table}"."createdBy"
   FROM "${table}"
   JOIN "cities" ON "cities"."id" = "${table}"."cityId"
-  WHERE "${table}"."userId"=$1
+  WHERE "id"=$1
   `;
-  const values = [userId];
+  const values = [id];
   const { rows } = await db.query(query, values);
   return rows[0];
 };
