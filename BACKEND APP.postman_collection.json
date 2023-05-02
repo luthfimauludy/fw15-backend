@@ -1477,7 +1477,7 @@
 							"response": []
 						},
 						{
-							"name": "GET RESERVATION SECTION",
+							"name": "GET DETAIL RESERVATION SECTION",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -1511,12 +1511,12 @@
 									"urlencoded": [
 										{
 											"key": "name",
-											"value": "section2",
+											"value": "VVIP",
 											"type": "default"
 										},
 										{
 											"key": "price",
-											"value": "50000",
+											"value": "$50",
 											"type": "default"
 										}
 									]
@@ -1544,12 +1544,12 @@
 									"urlencoded": [
 										{
 											"key": "name",
-											"value": "VVIP",
+											"value": "VIP",
 											"type": "default"
 										},
 										{
 											"key": "price",
-											"value": "$50",
+											"value": "$35",
 											"type": "default"
 										}
 									]
@@ -2299,12 +2299,12 @@
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "admin2@mail.com",
+									"value": "johncena@mail.com",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "!@#123Abc",
+									"value": "@John123",
 									"type": "text"
 								}
 							]
@@ -2332,12 +2332,12 @@
 							"urlencoded": [
 								{
 									"key": "fullName",
-									"value": "Administrator",
+									"value": "Luthfi Putra",
 									"type": "default"
 								},
 								{
 									"key": "email",
-									"value": "admin2@mail.com",
+									"value": "luthfi@mail.com",
 									"type": "text"
 								},
 								{
@@ -2381,7 +2381,7 @@
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "johncena@mail.com",
+									"value": "luthfi@mail.com",
 									"type": "default"
 								}
 							]
@@ -2409,22 +2409,22 @@
 							"urlencoded": [
 								{
 									"key": "code",
-									"value": "926010",
+									"value": "897940",
 									"type": "default"
 								},
 								{
 									"key": "email",
-									"value": "johncena@mail.com",
+									"value": "luthfi@mail.com",
 									"type": "default"
 								},
 								{
 									"key": "password",
-									"value": "@John123",
+									"value": "!@#123Abc",
 									"type": "default"
 								},
 								{
 									"key": "confirmPassword",
-									"value": "@John123",
+									"value": "!@#123Abc",
 									"type": "default"
 								}
 							]
@@ -2504,17 +2504,17 @@
 									"urlencoded": [
 										{
 											"key": "oldPassword",
-											"value": "@Baba321",
+											"value": "@John111",
 											"type": "default"
 										},
 										{
 											"key": "newPassword",
-											"value": "@Baba123",
+											"value": "@John123",
 											"type": "default"
 										},
 										{
 											"key": "confirmPassword",
-											"value": "@Baba123",
+											"value": "@John123",
 											"type": "default"
 										}
 									]
@@ -2576,12 +2576,28 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{url}}/events",
+									"raw": "{{url}}/events?search=Konser",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"events"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "2",
+											"disabled": true
+										},
+										{
+											"key": "sort",
+											"value": "title",
+											"disabled": true
+										},
+										{
+											"key": "search",
+											"value": "Konser"
+										}
 									]
 								}
 							},
@@ -2604,8 +2620,130 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "1"
+											"value": "6"
 										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "CREATE MANAGE EVENT",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "picture",
+											"type": "file",
+											"src": []
+										},
+										{
+											"key": "title",
+											"value": "Raisa Concert",
+											"type": "default"
+										},
+										{
+											"key": "date",
+											"value": "04-30-2023",
+											"type": "default"
+										},
+										{
+											"key": "cityId",
+											"value": "7",
+											"type": "default"
+										},
+										{
+											"key": "descriptions",
+											"value": "lorem ipsum",
+											"type": "default"
+										},
+										{
+											"key": "category",
+											"value": "Music",
+											"type": "default"
+										},
+										{
+											"key": "price",
+											"value": "$50",
+											"type": "default"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/events/manage",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"events",
+										"manage"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "HISTORY",
+					"item": [
+						{
+							"name": "GET ALL HISTORY",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/history",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"history"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "RESERVATIONS",
+					"item": [
+						{
+							"name": "CREATE RESERVATION",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "eventId",
+											"value": "7",
+											"type": "default"
+										},
+										{
+											"key": "sectionId",
+											"value": "4",
+											"type": "default"
+										},
+										{
+											"key": "quantity",
+											"value": "2",
+											"type": "default"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/reservations",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"reservations"
 									]
 								}
 							},
@@ -2650,6 +2788,43 @@
 											"value": "DESC",
 											"disabled": true
 										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "PAYMENTS",
+					"item": [
+						{
+							"name": "CREATE PAYMENT",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "reservationId",
+											"value": "9",
+											"type": "default"
+										},
+										{
+											"key": "paymentMethodId",
+											"value": "1",
+											"type": "default"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/payments",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"payments"
 									]
 								}
 							},
@@ -2739,55 +2914,6 @@
 					]
 				},
 				{
-					"name": "RESERVATIONS",
-					"item": [
-						{
-							"name": "CREATE RESERVATION",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "urlencoded",
-									"urlencoded": [
-										{
-											"key": "eventId",
-											"value": "1",
-											"type": "default"
-										},
-										{
-											"key": "userId",
-											"value": "21",
-											"type": "default"
-										},
-										{
-											"key": "statusId",
-											"value": "",
-											"type": "default",
-											"disabled": true
-										},
-										{
-											"key": "paymentMethodId",
-											"value": "",
-											"type": "default",
-											"disabled": true
-										}
-									]
-								},
-								"url": {
-									"raw": "{{url}}/reservations",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"reservations"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
 					"name": "WISHLISTS",
 					"item": [
 						{
@@ -2817,7 +2943,7 @@
 									"urlencoded": [
 										{
 											"key": "eventId",
-											"value": "1",
+											"value": "7",
 											"type": "default"
 										}
 									]
@@ -2887,7 +3013,13 @@
 		{
 			"key": "url",
 			"value": "http://localhost:8888",
-			"type": "string"
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "url",
+			"value": "https://gray-clumsy-walrus.cyclic.app",
+			"type": "default"
 		}
 	]
 }
