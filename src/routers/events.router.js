@@ -9,6 +9,10 @@ eventRouter.post(
   uploadMiddleware("picture"),
   eventController.createManageEvent
 );
-// eventRouter.patch("/manage", eventController.updateManageEvent);
+eventRouter.patch(
+  "/manage",
+  uploadMiddleware("picture"),
+  eventController.updateManageEvent
+);
 
 module.exports = eventRouter;

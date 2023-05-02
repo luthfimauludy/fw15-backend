@@ -21,11 +21,52 @@ exports.findAll = async (qs) => {
   return rows;
 };
 
+exports.findEvents = async (qs) => {
+  page = parseInt(qs.page) || 1;
+  limit = parseInt(qs.limit) || 5;
+  search = qs.search || "";
+  sort = qs.sort || "id";
+  sortBy = qs.sortBy || "ASC";
+  city = qs.city || "name";
+
+  const offset = (page - 1) * limit;
+  const query = `
+  SELECT
+
+  FROM "${table}"
+  WHERE "title" LIKE $3
+  ORDER BY ${sort} ${sortBy}
+  LIMIT $1 OFFSET $2
+  `;
+  const values = [limit, offset, `%${search}%`];
+  const { rows } = await db.query(query, values);
+  return rows;
+};
+
 exports.findOne = async (id) => {
   const query = `
   SELECT * FROM "${table}" WHERE id=$1
   `;
   const values = [id];
+  const { rows } = await db.query(query, values);
+  return rows[0];
+};
+
+exports.findOneByUserId = async (userId) => {
+  const query = `
+  SELECT 
+  "${table}"."title",
+  "${table}"."date",
+  "${table}"."cityId",
+  "${table}"."descriptions",
+  "${table}"."createdAt",
+  "${table}"."updatedAt"
+  "${table}"."createdBy"
+  FROM "${table}"
+  JOIN "users" ON "users"."id" = "${table}"."userId"
+  WHERE "${table}"."userId"=$1
+  `;
+  const values = [userId];
   const { rows } = await db.query(query, values);
   return rows[0];
 };

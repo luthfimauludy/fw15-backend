@@ -52,3 +52,28 @@ exports.createManageEvent = async (req, res) => {
     return errorHandler(res, err);
   }
 };
+
+exports.updateManageEvent = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const user = await eventsModel.findOneByUserId(id);
+    const data = { ...req.body };
+    if (req.file) {
+      if (user.picture) {
+        fileRemover({ filename: user.picture });
+      }
+      data.picture = req.file.filename;
+    }
+    const event = await eventsModel.updateByUserId(id, data);
+    if (!event) {
+      return errorHandler(res, undefined);
+    }
+    return res.json({
+      success: true,
+      message: "Event updated",
+      results: event,
+    });
+  } catch (err) {
+    return errorHandler(res, err);
+  }
+};
