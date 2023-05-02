@@ -55,8 +55,7 @@ exports.createManageEvent = async (req, res) => {
 
 exports.updateManageEvent = async (req, res) => {
   try {
-    const { id } = req.user;
-    const user = await eventsModel.findOneByUserId(id);
+    const user = await eventsModel.findOneByCreatedById(createdBy);
     const data = { ...req.body };
     if (req.file) {
       if (user.picture) {
@@ -64,7 +63,7 @@ exports.updateManageEvent = async (req, res) => {
       }
       data.picture = req.file.filename;
     }
-    const event = await eventsModel.updateByUserId(id, data);
+    const event = await eventsModel.findOneByCreatedById(createdBy, data);
     if (!event) {
       return errorHandler(res, undefined);
     }
