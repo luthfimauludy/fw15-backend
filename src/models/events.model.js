@@ -57,7 +57,8 @@ exports.findOneByUserId = async (userId) => {
   SELECT 
   "${table}"."title",
   "${table}"."date",
-  "cities"."cityId",
+  "cities"."id" as "cityId",
+  "cities"."name" as "location",
   "${table}"."descriptions",
   "${table}"."createdAt",
   "${table}"."updatedAt",
