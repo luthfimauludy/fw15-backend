@@ -55,7 +55,6 @@ exports.findOne = async (id) => {
 exports.findOneByUserId = async (userId) => {
   const query = `
   SELECT 
-  "users"."id" as "userId",
   "${table}"."title",
   "${table}"."date",
   "${table}"."cityId",
@@ -65,7 +64,6 @@ exports.findOneByUserId = async (userId) => {
   "${table}"."updatedAt",
   "${table}"."createdBy"
   FROM "${table}"
-  JOIN "users" ON "users"."id" = "${table}"."userId"
   JOIN "cities" ON "cities"."id" = "${table}"."cityId"
   WHERE "${table}"."userId"=$1
   `;
