@@ -11,30 +11,22 @@ exports.findAll = async (qs) => {
 
   const offset = (page - 1) * limit;
   const query = `
-  SELECT * FROM "${table}"
-  WHERE "title" LIKE $3
-  ORDER BY ${sort} ${sortBy}
-  LIMIT $1 OFFSET $2
-  `;
-  const values = [limit, offset, `%${search}%`];
-  const { rows } = await db.query(query, values);
-  return rows;
-};
-
-exports.findEvents = async (qs) => {
-  page = parseInt(qs.page) || 1;
-  limit = parseInt(qs.limit) || 5;
-  search = qs.search || "";
-  sort = qs.sort || "id";
-  sortBy = qs.sortBy || "ASC";
-  city = qs.city || "name";
-
-  const offset = (page - 1) * limit;
-  const query = `
   SELECT
-
+  "${table}"."id",
+  "${table}"."title",
+  "${table}"."picture",
+  "${table}"."date",
+  "categories"."name" as "category",
+  "cities"."name" as "location",
+  "${table}"."descriptions",
+  "${table}"."createdAt",
+  "${table}"."updatedAt",
+  "${table}"."createdBy"
   FROM "${table}"
-  WHERE "title" LIKE $3
+  JOIN "eventCategories" ON "${table}"."id" = "eventCategories"."eventId"
+  JOIN "categories" ON "categories"."id" = "eventCategories"."categoryId"
+  JOIN "cities" ON "cities"."id" = "${table}"."cityId"
+  WHERE "${table}"."title" LIKE $3
   ORDER BY ${sort} ${sortBy}
   LIMIT $1 OFFSET $2
   `;

@@ -3,6 +3,7 @@ const eventController = require("../controllers/events.controller");
 const uploadMiddleware = require("../middlewares/upload.middleware");
 
 eventRouter.get("/", eventController.getAllEvents);
+eventRouter.get("/", eventController.getEvents);
 eventRouter.get("/:id", eventController.getOneEvent);
 eventRouter.post(
   "/manage",

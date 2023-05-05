@@ -5,10 +5,24 @@ const errorHandler = require("../helpers/errorHandler.helper");
 exports.getAllEvents = async (req, res) => {
   try {
     const data = { ...req.query };
-    const event = await eventsModel.findAll(data);
+    const events = await eventsModel.findAll(data);
     return res.json({
       success: true,
       message: "List of all events",
+      results: events,
+    });
+  } catch (err) {
+    return errorHandler(res, err);
+  }
+};
+
+exports.getEvents = async (req, res) => {
+  try {
+    const data = { ...req.query };
+    const event = await eventsModel.findEvents(data);
+    return res.json({
+      success: true,
+      message: "List of all user events",
       results: event,
     });
   } catch (err) {
@@ -69,7 +83,7 @@ exports.updateManageEvent = async (req, res) => {
     }
     return res.json({
       success: true,
-      message: "Event updated",
+      message: "Update event successfully!",
       results: event,
     });
   } catch (err) {
