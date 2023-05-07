@@ -16,10 +16,10 @@ router.use(
   authMiddleware,
   require("./changePassword.router")
 );
-router.use("/cities", authMiddleware, require("./cities.router"));
+router.use("/cities", require("./cities.router"));
 router.use("/events", require("./events.router"));
 router.use("/history", authMiddleware, require("./history.router"));
-router.use("/partners", authMiddleware, require("./partners.router"));
+router.use("/partners", require("./partners.router"));
 router.use("/payments", authMiddleware, require("./payments.router"));
 router.use("/profile", authMiddleware, require("./profile.router"));
 router.use("/reservations", authMiddleware, require("./reservations.router"));
