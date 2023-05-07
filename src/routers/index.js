@@ -10,7 +10,7 @@ router.get("/", (req, res) => {
 
 router.use("/auth", require("./auth.router"));
 router.use("/admin", authMiddleware, require("./admin/admin.router"));
-router.use("/categories", authMiddleware, require("./categories.router"));
+router.use("/categories", require("./categories.router"));
 router.use(
   "/change-password",
   authMiddleware,
