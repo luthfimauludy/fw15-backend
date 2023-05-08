@@ -4,7 +4,7 @@ const table = "partners";
 
 exports.findAll = async (qs) => {
   page = parseInt(qs.page) || 1;
-  limit = parseInt(qs.limit) || 5;
+  limit = parseInt(qs.limit) || 6;
   search = qs.search || "";
   sort = qs.sort || "id";
   sortBy = qs.sortBy || "ASC";
