@@ -16,10 +16,10 @@ exports.getAllEvents = async (req, res) => {
   }
 };
 
-exports.getEvents = async (req, res) => {
+exports.getDetailEvents = async (req, res) => {
   try {
-    const data = { ...req.query };
-    const event = await eventsModel.findEvents(data);
+    const { id } = req.params;
+    const event = await eventsModel.findOne(id);
     return res.json({
       success: true,
       message: "List of all user events",
