@@ -36,7 +36,6 @@ exports.findOneByUserId = async (userId) => {
   "users"."id",
   "${table}"."fullName",
   "${table}"."picture",
-  "users"."username",
   "users"."email",
   "${table}"."phoneNumber",
   "${table}"."gender",
