@@ -4,40 +4,49 @@ const table = "events";
 
 exports.findAll = async (qs) => {
   page = parseInt(qs.page) || 1;
-  limit = parseInt(qs.limit) || 10;
+  limit = parseInt(qs.limit) || 5;
   search = qs.search || "";
   sort = qs.sort || "id";
   sortBy = qs.sortBy || "ASC";
+  category = qs.category || "";
+  city = qs.city || "";
 
   const offset = (page - 1) * limit;
   const query = `
   SELECT
   "${table}"."id",
-  "${table}"."title",
   "${table}"."picture",
+  "${table}"."title",
   "${table}"."date",
   "categories"."name" as "category",
-  "cities"."name" as "location",
-  "${table}"."descriptions",
-  "${table}"."createdAt",
-  "${table}"."updatedAt",
-  "${table}"."createdBy"
+  "cities"."name" as "location"
   FROM "${table}"
   JOIN "eventCategories" ON "${table}"."id" = "eventCategories"."eventId"
   JOIN "categories" ON "categories"."id" = "eventCategories"."categoryId"
   JOIN "cities" ON "cities"."id" = "${table}"."cityId"
-  WHERE "${table}"."title" LIKE $3
+  WHERE "${table}"."title" LIKE $3 
+  AND "categories"."name" LIKE $4
+  AND "cities"."name" LIKE $5
   ORDER BY ${sort} ${sortBy}
   LIMIT $1 OFFSET $2
   `;
-  const values = [limit, offset, `%${search}%`];
+  const values = [limit, offset, `%${search}%`, `%${category}%`, `%${city}%`];
   const { rows } = await db.query(query, values);
   return rows;
 };
 
 exports.findOne = async (id) => {
   const query = `
-  SELECT * FROM "${table}" WHERE id=$1
+  SELECT
+  "${table}"."id",
+  "${table}"."picture",
+  "${table}"."title",
+  "${table}"."date",
+  "cities"."name" as "location",
+  "${table}"."descriptions"
+  FROM "${table}"
+  JOIN "cities" ON "cities"."id" = "${table}"."cityId"
+  WHERE "${table}"."id"=$1
   `;
   const values = [id];
   const { rows } = await db.query(query, values);
@@ -47,6 +56,7 @@ exports.findOne = async (id) => {
 exports.findOneById = async (id) => {
   const query = `
   SELECT 
+  "${table}"."id",
   "${table}"."title",
   "${table}"."date",
   "${table}"."cityId",
