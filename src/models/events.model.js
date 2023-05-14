@@ -8,6 +8,25 @@ exports.findAll = async (qs) => {
   search = qs.search || "";
   sort = qs.sort || "id";
   sortBy = qs.sortBy || "ASC";
+
+  const offset = (page - 1) * limit;
+  const query = `
+  SELECT * FROM "${table}"
+  WHERE "title" LIKE $3
+  ORDER BY ${sort} ${sortBy}
+  LIMIT $1 OFFSET $2
+  `;
+  const values = [limit, offset, `%${search}%`];
+  const { rows } = await db.query(query, values);
+  return rows;
+};
+
+exports.findAllByUserLogin = async (qs) => {
+  page = parseInt(qs.page) || 1;
+  limit = parseInt(qs.limit) || 5;
+  search = qs.search || "";
+  sort = qs.sort || "id";
+  sortBy = qs.sortBy || "ASC";
   category = qs.category || "";
   city = qs.city || "";
 
