@@ -4,8 +4,8 @@ const authMiddleware = require("../middlewares/auth.middleware");
 const uploadMiddleware = require("../middlewares/upload.middleware");
 
 eventRouter.get("/", eventController.getAllEvents);
-eventRouter.get("/:id", eventController.getDetailEvents);
-eventRouter.get("/manage", eventController.getOneEvent);
+eventRouter.get("/:id", eventController.getOneEvent);
+eventRouter.get("/manage", eventController.getDetailEventsByUserLogin);
 eventRouter.post(
   "/manage",
   authMiddleware,
