@@ -37,20 +37,29 @@ exports.findAll = async (qs) => {
 
 exports.findOne = async (id) => {
   const query = `
+  SELECT * FROM "${table}"
+  WHERE "id"=$1
+  `;
+  const values = [id];
+  const { rows } = await db.query(query, values);
+  return rows[0];
+};
+
+exports.findEventsByUserLogin = async (id) => {
+  const query = `
   SELECT
   "${table}"."id",
-  "${table}"."picture",
   "${table}"."title",
   "${table}"."date",
   "cities"."name" as "location",
   "${table}"."descriptions"
   FROM "${table}"
   JOIN "cities" ON "cities"."id" = "${table}"."cityId"
-  WHERE "${table}"."id"=$1
+  WHERE "${table}"."createdBy"=$1
   `;
   const values = [id];
   const { rows } = await db.query(query, values);
-  return rows[0];
+  return rows;
 };
 
 exports.findOneById = async (id) => {
