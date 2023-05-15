@@ -68,6 +68,7 @@ exports.findEventsByUserLogin = async (id) => {
   const query = `
   SELECT
   "${table}"."id",
+  "${table}"."picture",
   "${table}"."title",
   "${table}"."date",
   "cities"."name" as "location",
@@ -85,6 +86,7 @@ exports.findOneById = async (id) => {
   const query = `
   SELECT 
   "${table}"."id",
+  "${table}"."picture",
   "${table}"."title",
   "${table}"."date",
   "${table}"."cityId",
@@ -95,7 +97,7 @@ exports.findOneById = async (id) => {
   "${table}"."createdBy"
   FROM "${table}"
   JOIN "cities" ON "cities"."id" = "${table}"."cityId"
-  WHERE "id"=$1
+  WHERE "${table}"."id"=$1
   `;
   const values = [id];
   const { rows } = await db.query(query, values);
