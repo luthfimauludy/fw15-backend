@@ -18,7 +18,7 @@ exports.getAllEvents = async (req, res) => {
 
 exports.getOneEvent = async (req, res) => {
   try {
-    const data = await eventsModel.findOne(req.params.id);
+    const data = await eventsModel.findOneById(req.params.id);
     if (!data) {
       return errorHandler(res, undefined);
     }
