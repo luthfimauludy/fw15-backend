@@ -12,7 +12,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: "demo/lpm",
+    folder: "lpm",
     format: async (req, file) => "png",
     public_id: (req, file) => {
       const filename = new Date().getTime().toString();
