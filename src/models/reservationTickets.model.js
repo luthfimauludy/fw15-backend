@@ -30,6 +30,15 @@ exports.findOne = async (id) => {
   return rows[0];
 };
 
+exports.findOneByReservationId = async (id) => {
+  const query = `
+  SELECT * FROM "${table}" WHERE reservationId=$1
+  `;
+  const values = [id];
+  const { rows } = await db.query(query, values);
+  return rows[0];
+};
+
 exports.insert = async (data) => {
   const query = `
   INSERT INTO "${table}" ("reservationId", "sectionId", "quantity") 
