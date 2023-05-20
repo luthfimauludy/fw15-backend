@@ -1,24 +1,37 @@
-const reservationsModel = require("../models/reservations.model");
+const reservationModel = require("../models/reservations.model");
+const reservationSectionsModel = require("../models/reservationSections.model");
+const reservationTicketsModel = require("../models/reservationTickets.model");
+const eventsModel = require("../models/events.model");
 const errorHandler = require("../helpers/errorHandler.helper");
 
 exports.createPayment = async (req, res) => {
   try {
-    const { id } = req.user;
-    const { reservationId, paymentMethodId } = req.body;
-    const data = {
-      ...req.body,
-      userId: id,
-      reservationId,
-      paymentMethodId,
-    };
-    const payment = await reservationsModel.updateByUserId(id, data);
-    if (!payment) {
-      return errorHandler(res, undefined);
+    const { id: userId } = req.user;
+    const reservation = await reservationModel.findOne(req.body.reservationId);
+    if (reservation.userId !== userId) {
+      throw Error("data_mismatch");
     }
+    const update = await reservationModel.update(req.body.reservationId, {
+      paymentMethodId: req.body.paymentMethodId,
+      statusId: 2,
+    });
+    const ticket = await reservationTicketsModel.findOneByReservationId(
+      update.id
+    );
+
+    const section = await reservationSectionsModel.findOne(ticket.sectionId);
+
     return res.json({
       success: true,
-      message: "Create payment success!",
-      results: payment,
+      message: "Payment success!",
+      results: {
+        id: reservation.id,
+        events: await eventsModel.findOneById(update.eventId),
+        sectionName: section.name,
+        quantity: ticket.quantity,
+        pricePerTicket: section.price,
+        totalPrice: parseInt(ticket.quantity) * section.price,
+      },
     });
   } catch (err) {
     return errorHandler(res, err);
