@@ -62,12 +62,16 @@ const queryFormat = query("sortBy")
 
 const eventIdFormat = body("eventId")
   .notEmpty()
-  .withMessage("EventId cannot be empty");
+  .withMessage("EventId cannot be empty")
+  .toInt()
+  .withMessage("EventId must be integer");
 
 const eventIdUpdateFormat = body("eventId")
   .optional()
   .notEmpty()
-  .withMessage("EventId cannot be empty");
+  .withMessage("EventId cannot be empty")
+  .toInt()
+  .withMessage("EventId must be integer");
 
 const userIdFormat = body("userId")
   .notEmpty()
@@ -227,7 +231,9 @@ const rules = {
     body("statusId").notEmpty().withMessage("StatusId cannot be empty"),
     body("paymentMethodId")
       .notEmpty()
-      .withMessage("PaymentMethodId cannot be empty"),
+      .withMessage("PaymentMethodId cannot be empty")
+      .toInt()
+      .withMessage("PaymentMethodId must be integer"),
   ],
   updateReservation: [
     eventIdUpdateFormat,
@@ -239,7 +245,9 @@ const rules = {
     body("paymentMethodId")
       .optional()
       .notEmpty()
-      .withMessage("PaymentMethodId cannot be empty"),
+      .withMessage("PaymentMethodId cannot be empty")
+      .toInt()
+      .withMessage("PaymentMethodId must be integer"),
   ],
   getAllReservationSections: [queryFormat],
   createReservationSection: [
@@ -257,23 +265,39 @@ const rules = {
   createReservationTicket: [
     body("reservationId")
       .notEmpty()
-      .withMessage("ReservationId cannot be empty"),
-    body("sectionId").notEmpty().withMessage("SectionId cannot be empty"),
-    body("quantity").notEmpty().withMessage("Quantity cannot be empty"),
+      .withMessage("ReservationId cannot be empty")
+      .toInt()
+      .withMessage("ReservationId must be integer"),
+    body("sectionId")
+      .notEmpty()
+      .withMessage("SectionId cannot be empty")
+      .toInt()
+      .withMessage("SectionId must be integer"),
+    body("quantity")
+      .notEmpty()
+      .withMessage("Quantity cannot be empty")
+      .toInt()
+      .withMessage("Quantity must be integer"),
   ],
   updateReservationTicket: [
     body("reservationId")
       .optional()
       .notEmpty()
-      .withMessage("ReservationId cannot be empty"),
+      .withMessage("ReservationId cannot be empty")
+      .toInt()
+      .withMessage("ReservationId must be integer"),
     body("sectionId")
       .optional()
       .notEmpty()
-      .withMessage("SectionId cannot be empty"),
+      .withMessage("SectionId cannot be empty")
+      .toInt()
+      .withMessage("SectionId must be integer"),
     body("quantity")
       .optional()
       .notEmpty()
-      .withMessage("Quantity cannot be empty"),
+      .withMessage("Quantity cannot be empty")
+      .toInt()
+      .withMessage("Quantity must be integer"),
   ],
   getAllWishlists: [queryFormat],
   createWishlist: [eventIdFormat, userIdFormat],
