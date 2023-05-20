@@ -89,12 +89,7 @@ exports.findOneById = async (id) => {
   "${table}"."picture",
   "${table}"."title",
   "${table}"."date",
-  "${table}"."cityId",
-  "cities"."name" as "location",
-  "${table}"."descriptions",
-  "${table}"."createdAt",
-  "${table}"."updatedAt",
-  "${table}"."createdBy"
+  "cities"."name" as "location"
   FROM "${table}"
   JOIN "cities" ON "cities"."id" = "${table}"."cityId"
   WHERE "${table}"."id"=$1
