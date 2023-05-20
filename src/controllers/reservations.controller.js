@@ -1,27 +1,37 @@
 const reservationsModel = require("../models/reservations.model");
 const reservationTicketsModel = require("../models/reservationTickets.model");
+const eventsModel = require("../models/events.model");
+const reservationSectionsModel = require("../models/reservationSections.model");
 const errorHandler = require("../helpers/errorHandler.helper");
 
 exports.createReservation = async (req, res) => {
   try {
-    const { id } = req.user;
-    const { eventId, sectionId, quantity } = req.body;
+    const { id: userId } = req.user;
     const reservationData = {
-      eventId,
-      userId: id,
+      ...req.body,
+      userId,
       statusId: 1,
     };
     const reservation = await reservationsModel.insert(reservationData);
     const reservationTicketData = {
+      ...req.body,
       reservationId: reservation.id,
-      sectionId,
-      quantity,
     };
+    const section = await reservationSectionsModel.findOne(req.body.sectionId);
+
     await reservationTicketsModel.insert(reservationTicketData);
+
     return res.json({
       success: true,
       message: "Create reservation success!",
-      results: reservation,
+      results: {
+        id: reservation.id,
+        events: await eventsModel.findOneById(req.body.eventId),
+        sectionName: section.name,
+        quantity: req.body.quantity,
+        pricePerTicket: section.price,
+        totalPrice: parseInt(req.body.quantity) * section.price,
+      },
     });
   } catch (err) {
     return errorHandler(res, err);
