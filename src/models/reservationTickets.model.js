@@ -32,7 +32,7 @@ exports.findOne = async (id) => {
 
 exports.findOneByReservationId = async (id) => {
   const query = `
-  SELECT * FROM "${table}" WHERE reservationId=$1
+  SELECT * FROM "${table}" WHERE "reservationId" = $1
   `;
   const values = [id];
   const { rows } = await db.query(query, values);
