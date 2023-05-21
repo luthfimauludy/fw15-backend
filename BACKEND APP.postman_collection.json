@@ -354,7 +354,7 @@
 									"query": [
 										{
 											"key": "page",
-											"value": "1",
+											"value": "2",
 											"disabled": true
 										},
 										{
@@ -466,12 +466,13 @@
 										{
 											"key": "picture",
 											"type": "file",
-											"src": "/C:/Users/LUTHFI/Downloads/raisa-concert.jpeg"
+											"src": "/E:/Bootcamp/Week 5/fw15-backend/uploads/1684076888176.jpg"
 										},
 										{
 											"key": "title",
 											"value": "Raisa Concert",
-											"type": "default"
+											"type": "default",
+											"disabled": true
 										},
 										{
 											"key": "date",
@@ -482,17 +483,20 @@
 										{
 											"key": "cityId",
 											"value": "8",
-											"type": "default"
+											"type": "default",
+											"disabled": true
 										},
 										{
 											"key": "descriptions",
 											"value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-											"type": "default"
+											"type": "default",
+											"disabled": true
 										},
 										{
 											"key": "createdBy",
 											"value": "15",
-											"type": "default"
+											"type": "default",
+											"disabled": true
 										}
 									]
 								},
@@ -509,7 +513,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "10"
+											"value": "1"
 										}
 									]
 								}
@@ -1550,11 +1554,12 @@
 										{
 											"key": "name",
 											"value": "VIP",
-											"type": "default"
+											"type": "default",
+											"disabled": true
 										},
 										{
 											"key": "price",
-											"value": "$35",
+											"value": "500000",
 											"type": "default"
 										}
 									]
@@ -1572,7 +1577,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "3"
+											"value": "4"
 										}
 									]
 								}
@@ -1712,7 +1717,7 @@
 									"urlencoded": [
 										{
 											"key": "name",
-											"value": "PAID",
+											"value": "UNPAID",
 											"type": "default"
 										}
 									]
@@ -1730,7 +1735,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "2"
+											"value": "1"
 										}
 									]
 								}
@@ -1951,7 +1956,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{url}}/admin/users?page=1&sort=email",
+									"raw": "{{url}}/admin/users?page=3",
 									"host": [
 										"{{url}}"
 									],
@@ -1962,7 +1967,7 @@
 									"query": [
 										{
 											"key": "page",
-											"value": "1"
+											"value": "3"
 										},
 										{
 											"key": "limit",
@@ -1976,7 +1981,8 @@
 										},
 										{
 											"key": "sort",
-											"value": "email"
+											"value": "email",
+											"disabled": true
 										},
 										{
 											"key": "sortBy",
@@ -2304,12 +2310,12 @@
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "johncena@mail.com",
+									"value": "luthfi@mail.com",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "@John123",
+									"value": "!@#123Abc",
 									"type": "text"
 								}
 							]
@@ -2659,27 +2665,31 @@
 												{
 													"key": "picture",
 													"type": "file",
-													"src": []
+													"src": "/E:/Bootcamp/Week 5/fw15-backend/uploads/1684076888176.jpg"
 												},
 												{
 													"key": "title",
 													"value": "Dewa 19 Concert",
-													"type": "default"
+													"type": "default",
+													"disabled": true
 												},
 												{
 													"key": "date",
 													"value": "05-01-2023",
-													"type": "default"
+													"type": "default",
+													"disabled": true
 												},
 												{
 													"key": "cityId",
 													"value": "5",
-													"type": "default"
+													"type": "default",
+													"disabled": true
 												},
 												{
 													"key": "descriptions",
 													"value": "lorem ipsum",
-													"type": "default"
+													"type": "default",
+													"disabled": true
 												}
 											]
 										},
@@ -2696,7 +2706,7 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "16"
+													"value": "1"
 												}
 											]
 										}
@@ -2711,7 +2721,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{url}}/events?page=3",
+									"raw": "{{url}}/events",
 									"host": [
 										"{{url}}"
 									],
@@ -2721,7 +2731,8 @@
 									"query": [
 										{
 											"key": "page",
-											"value": "3"
+											"value": "3",
+											"disabled": true
 										},
 										{
 											"key": "sort",
@@ -2815,10 +2826,10 @@
 					]
 				},
 				{
-					"name": "HISTORY",
+					"name": "HISTORY TRANSACTION",
 					"item": [
 						{
-							"name": "GET ALL HISTORY",
+							"name": "GET ALL HISTORY TRANSACTION",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -2829,48 +2840,6 @@
 									],
 									"path": [
 										"history"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "RESERVATIONS",
-					"item": [
-						{
-							"name": "CREATE RESERVATION",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "urlencoded",
-									"urlencoded": [
-										{
-											"key": "eventId",
-											"value": "17",
-											"type": "default"
-										},
-										{
-											"key": "sectionId",
-											"value": "1",
-											"type": "default"
-										},
-										{
-											"key": "quantity",
-											"value": "1",
-											"type": "default"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{url}}/reservations",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"reservations"
 									]
 								}
 							},
@@ -2926,7 +2895,7 @@
 					"name": "PAYMENTS",
 					"item": [
 						{
-							"name": "CREATE PAYMENT",
+							"name": "PAYMENT",
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -2935,16 +2904,33 @@
 									"urlencoded": [
 										{
 											"key": "reservationId",
-											"value": "10",
+											"value": "12",
 											"type": "default"
 										},
 										{
 											"key": "paymentMethodId",
-											"value": "99",
+											"value": "1",
 											"type": "default"
 										}
 									]
 								},
+								"url": {
+									"raw": "{{url}}/payments",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"payments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET ALL PAYMENT METHOD",
+							"request": {
+								"method": "GET",
+								"header": [],
 								"url": {
 									"raw": "{{url}}/payments",
 									"host": [
@@ -3037,6 +3023,70 @@
 									],
 									"path": [
 										"profile"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "RESERVATIONS",
+					"item": [
+						{
+							"name": "CREATE RESERVATION",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "eventId",
+											"value": "20",
+											"type": "default"
+										},
+										{
+											"key": "sectionId",
+											"value": "1",
+											"type": "default"
+										},
+										{
+											"key": "quantity",
+											"value": "2",
+											"type": "default"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/reservations",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"reservations"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "SECTIONS",
+					"item": [
+						{
+							"name": "GET ALL SECTIONS",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/sections",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"sections"
 									]
 								}
 							},
@@ -3148,7 +3198,7 @@
 		},
 		{
 			"key": "url",
-			"value": "https://gray-clumsy-walrus.cyclic.app",
+			"value": "https://lpm-backend.cyclic.app/",
 			"type": "default",
 			"disabled": true
 		}
