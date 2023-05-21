@@ -2,7 +2,18 @@ const reservationModel = require("../models/reservations.model");
 const reservationSectionsModel = require("../models/reservationSections.model");
 const reservationTicketsModel = require("../models/reservationTickets.model");
 const eventsModel = require("../models/events.model");
+const paymentMethodsModel = require("../models/paymentMethods.model");
 const errorHandler = require("../helpers/errorHandler.helper");
+
+exports.getAllPayment = async (req, res) => {
+  const data = { ...req.query };
+  const methodData = await paymentMethodsModel.findAll(data);
+  return res.json({
+    success: true,
+    message: "List of all method data",
+    results: methodData,
+  });
+};
 
 exports.createPayment = async (req, res) => {
   try {
