@@ -23,6 +23,11 @@ router.use("/partners", require("./partners.router"));
 router.use("/payments", authMiddleware, require("./payments.router"));
 router.use("/profile", authMiddleware, require("./profile.router"));
 router.use("/reservations", authMiddleware, require("./reservations.router"));
+router.use(
+  "/sections",
+  authMiddleware,
+  require("./reservationSections.router")
+);
 router.use("/wishlists", authMiddleware, require("./wishlists.router"));
 
 router.use("*", (req, res) => {
