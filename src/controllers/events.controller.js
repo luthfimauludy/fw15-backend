@@ -1,6 +1,8 @@
 const eventCategoriesModel = require("../models/eventCategories.model");
 const eventsModel = require("../models/events.model");
+const deviceTokenModel = require("../models/deviceToken.model");
 const errorHandler = require("../helpers/errorHandler.helper");
+const admin = require("../helpers/firebase");
 
 exports.getAllEvents = async (req, res) => {
   try {
@@ -54,9 +56,21 @@ exports.createManageEvent = async (req, res) => {
       createdBy: id,
     };
     if (req.file) {
-      data.picture = req.file.filename;
+      data.picture = req.file.path;
     }
     const event = await eventsModel.insert(data);
+
+    const listToken = await deviceTokenModel.findAll(1, 1000);
+    const message = listToken.map((item) => ({
+      token: item.token,
+      notification: {
+        title: "There is new event!",
+        body: `${req.body.title} will be held at ${req.body.date}, check it out!`,
+      },
+    }));
+
+    const messaging = admin.messaging();
+    messaging.sendEach(message);
     return res.json({
       success: true,
       message: "Create event successfully!",
@@ -74,7 +88,7 @@ exports.updateManageEvent = async (req, res) => {
     const data = { ...req.body };
     if (req.file) {
       if (user.picture) {
-        fileRemover({ filename: user.picture });
+        // fileRemover({ filename: user.picture });
       }
       // data.picture = req.file.filename;
       data.picture = req.file.path;
