@@ -29,6 +29,7 @@ router.use(
   require("./reservationSections.router")
 );
 router.use("/wishlists", authMiddleware, require("./wishlists.router"));
+router.use("/device-token", authMiddleware, require("./deviceToken.router"));
 
 router.use("*", (req, res) => {
   return res.status(404).json({
