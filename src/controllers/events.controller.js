@@ -1,4 +1,6 @@
 const eventCategoriesModel = require("../models/eventCategories.model");
+const citiesModel = require("../models/cities.model");
+const categoriesModel = require("../models/categories.model");
 const eventsModel = require("../models/events.model");
 const deviceTokenModel = require("../models/deviceToken.model");
 const errorHandler = require("../helpers/errorHandler.helper");
@@ -22,7 +24,7 @@ exports.getOneEvent = async (req, res) => {
   try {
     const data = await eventsModel.findOneById(req.params.id);
     if (!data) {
-      return errorHandler(res, undefined);
+      throw Error("data_not_found");
     }
     return res.json({
       success: true,
@@ -51,14 +53,38 @@ exports.getDetailEventsByUserLogin = async (req, res) => {
 exports.createManageEvent = async (req, res) => {
   try {
     const { id } = req.user;
+    if (!id) {
+      return errorHandler(res, undefined);
+    }
+
     const data = {
       ...req.body,
       createdBy: id,
     };
+
+    if (data.cityId) {
+      const city = await citiesModel.findOne(data.cityId);
+      if (!city) {
+        throw Error("data_not_found");
+      }
+    }
+
+    if (data.categoryId) {
+      const category = await categoriesModel.findOne(data.categoryId);
+      if (!category) {
+        throw Error("data_not_found");
+      }
+    }
+
     if (req.file) {
       data.picture = req.file.path;
     }
     const event = await eventsModel.insert(data);
+    const eventCategoriesData = {
+      eventId: event.id,
+      categoryId: data.categoryId,
+    };
+    await eventCategoriesModel.insert(eventCategoriesData);
 
     const listToken = await deviceTokenModel.findAll(1, 1000);
     const message = listToken.map((item) => ({
@@ -84,19 +110,52 @@ exports.createManageEvent = async (req, res) => {
 exports.updateManageEvent = async (req, res) => {
   try {
     const { id } = req.user;
-    const user = await eventsModel.findOneById(id);
-    const data = { ...req.body };
+    if (!id) {
+      return errorHandler(res, undefined);
+    }
+
+    const checkEvent = await eventsModel.findOne(req.params.id);
+    if (!checkEvent) {
+      throw Error("data_not_found");
+    }
+
+    if (id !== checkEvent.createdBy) {
+      throw Error("event_not_created_by_you");
+    }
+
+    const data = {
+      ...req.body,
+      createdBy: id,
+    };
+
+    if (data.cityId) {
+      const checkCity = await citiesModel.findOne(data.cityId);
+      if (!checkCity) {
+        throw Error("data_not_found");
+      }
+    }
+
+    if (data.categoryId) {
+      const checkCategory = await categoriesModel.findOne(data.categoryId);
+      if (!checkCategory) {
+        throw Error("data_not_found");
+      }
+    }
+
     if (req.file) {
-      if (user.picture) {
+      if (checkEvent.picture) {
         // fileRemover({ filename: user.picture });
       }
       // data.picture = req.file.filename;
       data.picture = req.file.path;
     }
     const event = await eventsModel.update(req.params.id, data);
-    if (!event) {
-      return errorHandler(res, undefined);
-    }
+
+    const eventCategoryData = {
+      categoryId: data.categoryId,
+    };
+    await eventCategoriesModel.updateByEventId(event.id, eventCategoryData);
+
     return res.json({
       success: true,
       message: "Update event successfully!",
