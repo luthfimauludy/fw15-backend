@@ -76,6 +76,18 @@ exports.update = async (id, data) => {
   return rows[0];
 };
 
+exports.updateByEventId = async (id, data) => {
+  const query = `
+  UPDATE "${table}" SET 
+  "categoryId"=COALESCE(NULLIF($2::INTEGER, NULL), "categoryId")
+  WHERE "eventId"=$1
+  RETURNING *;
+  `;
+  const values = [id, data.categoryId];
+  const { rows } = await db.query(query, values);
+  return rows[0];
+};
+
 exports.destroy = async (id) => {
   const query = `
   DELETE FROM "${table}" WHERE "id"=$1
