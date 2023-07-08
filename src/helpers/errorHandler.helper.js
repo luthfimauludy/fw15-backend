@@ -35,6 +35,18 @@ const errorHandler = (res, err) => {
       message: "Error: User not found!",
     });
   }
+  if (err?.message?.includes("data_not_found")) {
+    return res.status(404).json({
+      success: false,
+      message: "Error: Data not found!",
+    });
+  }
+  if (err?.message?.includes("event_not_created_by_you")) {
+    return res.status(400).json({
+      success: false,
+      message: "Error: This event is not created by you!",
+    });
+  }
   if (err?.message?.includes("name_empty_field")) {
     return res.status(400).json({
       success: false,
