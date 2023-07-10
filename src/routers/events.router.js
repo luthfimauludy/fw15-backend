@@ -13,7 +13,7 @@ eventRouter.post(
   eventController.createManageEvent
 );
 eventRouter.patch(
-  "/manage",
+  "/manage/:id",
   authMiddleware,
   uploadMiddleware("picture"),
   eventController.updateManageEvent
