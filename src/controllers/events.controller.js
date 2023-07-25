@@ -38,7 +38,7 @@ exports.getOneEvent = async (req, res) => {
 
 exports.getDetailEventsByUserLogin = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.user;
     const event = await eventsModel.findEventsByUserLogin(id);
     return res.json({
       success: true,
@@ -160,6 +160,27 @@ exports.updateManageEvent = async (req, res) => {
       success: true,
       message: "Update event successfully!",
       results: event,
+    });
+  } catch (err) {
+    return errorHandler(res, err);
+  }
+};
+
+exports.deleteManageEvent = async (req, res) => {
+  try {
+    const { id } = req.user;
+    if (!id) {
+      return errorHandler(res, undefined);
+    }
+    
+    const data = await eventsModel.destroy(req.params.id);
+    if (!data) {
+      return errorHandler(res, undefined);
+    }
+    return res.json({
+      success: true,
+      message: "Delete event successfully",
+      results: data,
     });
   } catch (err) {
     return errorHandler(res, err);
