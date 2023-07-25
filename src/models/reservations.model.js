@@ -59,7 +59,7 @@ exports.findOne = async (id) => {
   return rows[0];
 };
 
-exports.findAllByUserId = async (userId) => {
+exports.findReservationByUserId = async (userId) => {
   const query = `
   SELECT 
   "events"."id" as "eventId",
@@ -84,7 +84,7 @@ exports.findAllByUserId = async (userId) => {
   `;
   const values = [userId];
   const { rows } = await db.query(query, values);
-  return rows[0];
+  return rows;
 };
 
 exports.insert = async (data) => {
