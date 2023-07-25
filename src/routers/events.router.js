@@ -4,8 +4,11 @@ const authMiddleware = require("../middlewares/auth.middleware");
 const uploadMiddleware = require("../middlewares/upload.middleware");
 
 eventRouter.get("/", eventController.getAllEvents);
-eventRouter.get("/:id", eventController.getOneEvent);
-eventRouter.get("/manage", eventController.getDetailEventsByUserLogin);
+eventRouter.get(
+  "/manage",
+  authMiddleware,
+  eventController.getDetailEventsByUserLogin
+);
 eventRouter.post(
   "/manage",
   authMiddleware,
@@ -18,5 +21,11 @@ eventRouter.patch(
   uploadMiddleware("picture"),
   eventController.updateManageEvent
 );
+eventRouter.delete(
+  "/manage/:id",
+  authMiddleware,
+  eventController.deleteManageEvent
+);
+eventRouter.get("/:id", eventController.getOneEvent);
 
 module.exports = eventRouter;
