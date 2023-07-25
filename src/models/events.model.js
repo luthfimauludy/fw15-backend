@@ -31,6 +31,15 @@ exports.findAllByUserLogin = async (qs) => {
   city = qs.city || "";
 
   const offset = (page - 1) * limit;
+
+  const countQuery = `
+  SELECT COUNT(*)::INTEGER
+  FROM "${table}"
+  WHERE "title" ILIKE $1`;
+  
+  const countvalues = [`%${search}%`];
+  const { rows: countRows } = await db.query(countQuery, countvalues);
+
   const query = `
   SELECT
   "${table}"."id",
@@ -43,15 +52,23 @@ exports.findAllByUserLogin = async (qs) => {
   JOIN "eventCategories" ON "${table}"."id" = "eventCategories"."eventId"
   JOIN "categories" ON "categories"."id" = "eventCategories"."categoryId"
   JOIN "cities" ON "cities"."id" = "${table}"."cityId"
-  WHERE "${table}"."title" LIKE $3 
-  AND "categories"."name" LIKE $4
-  AND "cities"."name" LIKE $5
+  WHERE "${table}"."title" ILIKE $3 
+  AND "categories"."name" ILIKE $4
+  AND "cities"."name" ILIKE $5
   ORDER BY ${sort} ${sortBy}
   LIMIT $1 OFFSET $2
   `;
   const values = [limit, offset, `%${search}%`, `%${category}%`, `%${city}%`];
   const { rows } = await db.query(query, values);
-  return rows;
+  return {
+    rows,
+    pageInfo: {
+      totalData: countRows[0].count,
+      page: page,
+      limit: limit,
+      totalPage: Math.ceil(countRows[0].count / limit),
+    },
+  };
 };
 
 exports.findOne = async (id) => {
@@ -64,20 +81,19 @@ exports.findOne = async (id) => {
   return rows[0];
 };
 
-exports.findEventsByUserLogin = async (id) => {
+exports.findEventsByUserLogin = async (createdBy) => {
   const query = `
   SELECT
   "${table}"."id",
-  "${table}"."picture",
   "${table}"."title",
   "${table}"."date",
-  "cities"."name" as "location",
-  "${table}"."descriptions"
+  "${table}"."createdAt",
+  "cities"."name" as "location"
   FROM "${table}"
   JOIN "cities" ON "cities"."id" = "${table}"."cityId"
   WHERE "${table}"."createdBy"=$1
   `;
-  const values = [id];
+  const values = [createdBy];
   const { rows } = await db.query(query, values);
   return rows;
 };
@@ -89,9 +105,12 @@ exports.findOneById = async (id) => {
   "${table}"."picture",
   "${table}"."title",
   "${table}"."date",
+  "categories"."name" as "category",
   "cities"."name" as "location",
   "${table}"."descriptions"
   FROM "${table}"
+  JOIN "eventCategories" ON "${table}"."id" = "eventCategories"."eventId"
+  JOIN "categories" ON "categories"."id" = "eventCategories"."categoryId"
   JOIN "cities" ON "cities"."id" = "${table}"."cityId"
   WHERE "${table}"."id"=$1
   `;
