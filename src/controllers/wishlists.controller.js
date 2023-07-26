@@ -25,7 +25,7 @@ exports.createWishlist = async (req, res) => {
     const { eventId } = req.body;
     const data = await eventsModel.findOne(eventId);
     if (!data) {
-      return errorHandler(res, undefined);
+      throw Error("data_not_found");
     }
     const wishlistData = {
       eventId,
@@ -34,8 +34,24 @@ exports.createWishlist = async (req, res) => {
     const wishlist = await wishlistsModel.insert(wishlistData);
     return res.json({
       success: true,
-      message: "Create wishlist success!",
+      message: "Create wishlist successfully!",
       results: wishlist,
+    });
+  } catch (err) {
+    return errorHandler(res, err);
+  }
+};
+
+exports.deleteWishlist = async (req, res) => {
+  try {
+    const data = await wishlistsModel.destroy(req.params.id);
+    if (!data) {
+      throw Error("data_not_found");
+    }
+    return res.json({
+      success: true,
+      message: "Delete wishlist successfully",
+      results: data,
     });
   } catch (err) {
     return errorHandler(res, err);
