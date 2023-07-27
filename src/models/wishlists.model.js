@@ -33,6 +33,7 @@ exports.findOne = async (id) => {
 exports.findAllByUserId = async (userId) => {
   const query = `
   SELECT 
+  "${table}"."id" as "wishlistId",
   "events"."id" as "eventId",
   "users"."id" as "userId",
   "events"."title",
