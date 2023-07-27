@@ -19,6 +19,29 @@ exports.getWishlist = async (req, res) => {
   }
 };
 
+exports.checkingWishlist = async (req, res) => {
+  const { id } = req.user;
+  const event = req.query;
+  const eventId = event.eventId;
+  console.log(req.body);
+  const checkWislist = await wishlistsModel.findOneByUserIdAndEventId(
+    id,
+    eventId
+  );
+  if (!checkWislist) {
+    return res.json({
+      success: false,
+      message: `Wishlist event ${eventId} by user ${id} not found`,
+      results: false,
+    });
+  }
+  return res.json({
+    success: true,
+    message: `Wishlist event ${eventId} by user ${id} found`,
+    results: true,
+  });
+};
+
 exports.createWishlist = async (req, res) => {
   try {
     const { id } = req.user;
