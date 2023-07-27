@@ -101,6 +101,12 @@ const errorHandler = (res, err) => {
       message: "Error: No request forgot password!",
     });
   }
+  if (err?.message?.includes("create_wishlist_failed")) {
+    return response.status(400).json({
+      success: false,
+      message: "Create wishlist failed!",
+    });
+  }
 
   console.log(err);
   return res.status(500).json({
