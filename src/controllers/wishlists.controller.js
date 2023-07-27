@@ -23,7 +23,6 @@ exports.checkingWishlist = async (req, res) => {
   const { id } = req.user;
   const event = req.query;
   const eventId = event.eventId;
-  console.log(req.body);
   const checkWislist = await wishlistsModel.findOneByUserIdAndEventId(
     id,
     eventId
@@ -63,7 +62,7 @@ exports.createWishlist = async (req, res) => {
         id,
         eventId
       );
-      return response.json({
+      return res.json({
         success: true,
         message: "Remove wishlist successfully!",
         results: deleteWishlist,
