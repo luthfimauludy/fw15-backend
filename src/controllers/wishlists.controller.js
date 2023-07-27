@@ -31,7 +31,26 @@ exports.createWishlist = async (req, res) => {
       eventId,
       userId: id,
     };
+    const checkDuplicate = await wishlistsModel.findOneByUserIdAndEventId(
+      id,
+      eventId
+    );
+    if (checkDuplicate) {
+      const deleteWishlist = await wishlistsModel.deleteByUserIdAndEventId(
+        id,
+        eventId
+      );
+      return response.json({
+        success: true,
+        message: "Remove wishlist successfully!",
+        results: deleteWishlist,
+      });
+    }
+
     const wishlist = await wishlistsModel.insert(wishlistData);
+    if (!wishlist) {
+      throw Error("create_wishlist_failed");
+    }
     return res.json({
       success: true,
       message: "Create wishlist successfully!",

@@ -51,6 +51,27 @@ exports.findAllByUserId = async (userId) => {
   return rows;
 };
 
+exports.findOneByUserIdAndEventId = async (userId, eventId) => {
+  const queries = `
+  SELECT * FROM "${table}"
+  WHERE "userId" = $1 AND "eventId" = $2
+`;
+  const values = [userId, eventId];
+  const { rows } = await db.query(queries, values);
+  return rows[0];
+};
+
+exports.deleteByUserIdAndEventId = async (userId, eventId) => {
+  const queries = `
+  DELETE FROM "${table}"
+  WHERE "userId" = $1 AND "eventId" = $2
+  RETURNING *
+  `;
+  const values = [userId, eventId];
+  const { rows } = await db.query(queries, values);
+  return rows[0];
+};
+
 exports.insert = async (data) => {
   const query = `
   INSERT INTO "${table}" ("eventId", "userId") 
