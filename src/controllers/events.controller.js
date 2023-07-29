@@ -9,11 +9,14 @@ const admin = require("../helpers/firebase");
 exports.getAllEvents = async (req, res) => {
   try {
     const data = { ...req.query };
-    const events = await eventsModel.findAllByUserLogin(data);
+    const { rows: results, pageInfo } = await eventsModel.findAllByUserLogin(
+      data
+    );
     return res.json({
       success: true,
       message: "List of all events",
-      results: events,
+      results,
+      pageInfo,
     });
   } catch (err) {
     return errorHandler(res, err);
@@ -172,7 +175,7 @@ exports.deleteManageEvent = async (req, res) => {
     if (!id) {
       return errorHandler(res, undefined);
     }
-    
+
     const data = await eventsModel.destroy(req.params.id);
     if (!data) {
       return errorHandler(res, undefined);

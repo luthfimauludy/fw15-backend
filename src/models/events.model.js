@@ -36,7 +36,7 @@ exports.findAllByUserLogin = async (qs) => {
   SELECT COUNT(*)::INTEGER
   FROM "${table}"
   WHERE "title" ILIKE $1`;
-  
+
   const countvalues = [`%${search}%`];
   const { rows: countRows } = await db.query(countQuery, countvalues);
 
