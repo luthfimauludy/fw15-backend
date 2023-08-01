@@ -30,7 +30,13 @@ exports.findOne = async (id) => {
   return rows[0];
 };
 
-exports.findAllByUserId = async (userId) => {
+exports.findAllByUserId = async (userId, qs) => {
+  page = parseInt(qs.page) || 1;
+  limit = parseInt(qs.limit) || 5;
+  sort = qs.sort || "id";
+  sortBy = qs.sortBy || "ASC";
+
+  const offset = (page - 1) * limit;
   const query = `
   SELECT 
   "${table}"."id" as "wishlistId",
@@ -46,8 +52,10 @@ exports.findAllByUserId = async (userId) => {
   JOIN "users" ON "users"."id" = "${table}"."userId"
   JOIN "cities" ON "cities"."id" = "events"."cityId"
   WHERE "${table}"."userId"=$1
+  ORDER BY ${sort} ${sortBy}
+  LIMIT $2 OFFSET $3
   `;
-  const values = [userId];
+  const values = [userId, limit, offset];
   const { rows } = await db.query(query, values);
   return rows;
 };
