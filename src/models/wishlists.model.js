@@ -30,10 +30,7 @@ exports.findOne = async (id) => {
   return rows[0];
 };
 
-exports.findAllByUserId = async (userId, qs) => {
-  sort = qs.sort || "id";
-  sortBy = qs.sortBy || "ASC";
-
+exports.findAllByUserId = async (userId) => {
   const query = `
   SELECT 
   "${table}"."id" as "wishlistId",
@@ -49,7 +46,6 @@ exports.findAllByUserId = async (userId, qs) => {
   JOIN "users" ON "users"."id" = "${table}"."userId"
   JOIN "cities" ON "cities"."id" = "events"."cityId"
   WHERE "${table}"."userId"=$1
-  ORDER BY ${sort} ${sortBy}
   `;
   const values = [userId];
   const { rows } = await db.query(query, values);
