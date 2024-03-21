@@ -4,7 +4,7 @@ const categoriesModel = require("../models/categories.model");
 const eventsModel = require("../models/events.model");
 const deviceTokenModel = require("../models/deviceToken.model");
 const errorHandler = require("../helpers/errorHandler.helper");
-const admin = require("../helpers/firebase");
+// const admin = require("../helpers/firebase");
 
 exports.getAllEvents = async (req, res) => {
   try {
@@ -98,8 +98,8 @@ exports.createManageEvent = async (req, res) => {
       },
     }));
 
-    const messaging = admin.messaging();
-    messaging.sendEach(message);
+    // const messaging = admin.messaging();
+    // messaging.sendEach(message);
     return res.json({
       success: true,
       message: "Create event successfully!",
